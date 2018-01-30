@@ -55,7 +55,7 @@ guess_system_package_manager(){
                             libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev  \ 
                             libvorbis-dev libxvidcore-dev x264 v4l-utils ffmpeg libeigen3-dev libglew-1.10  \ 
                             libusb-1.0-0-dev libpng12-dev libtiff5-dev libopenexr-dev doxygen libboost-all-dev \ 
-                            libflann1.8 libflann-dev prelink execstack libglfw3 libglfw3-dev libglew-dev libglm-dev libsoil-dev "
+                            libflann1.8 libflann-dev prelink execstack libglew-dev libglm-dev libsoil-dev "
     elif [ $SYSTEM_PACKAGE_TYPE == "archpkg" || $SYSTEM_PACKAGE_TYPE == "ebuild" ]; then
         SYSTEM_PACKAGE_SET="gvim ctags cscope git wget pcre libyaml python-pip python clang"
     fi
@@ -133,6 +133,18 @@ echo "$passwd" | sudo -S make install
 echo "$passwd" | sudo -S /bin/bash -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
 echo "$passwd" | sudo -S ldconfig
 echo "$passwd" | sudo -S execstack -c /usr/local/lib/*opencv*.so*
+cd ../../
+
+# Install GLFW
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Installing GLFW ..."
+echo "----------------------------------------------------------------------------"
+echo "$passwd" | sudo -S git clone https://github.com/glfw/glfw && cd glfw
+echo "$passwd" | sudo -S mkdir build && cd build
+echo "$passwd" | sudo -S cmake ..
+echo "$passwd" | sudo -S make
+echo "$passwd" | sudo -S make install
 cd ../../
 
 # Install libuvc
