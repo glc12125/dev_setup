@@ -47,7 +47,7 @@ guess_system_package_manager(){
     if [ $SYSTEM_PACKAGE_TYPE == "rpm" ]; then
         SYSTEM_PACKAGE_SET="gvim ctags cscope git wget pcre-devel libyaml-devel python-pip python-devel clang-devel clang-libs"
     elif [ $SYSTEM_PACKAGE_TYPE == "deb" ]; then
-        SYSTEM_PACKAGE_SET="build-essential checkinstall cmake pkg-config yasm libtiff5-dev libjpeg-dev libjasper-dev wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils ffmpeg libeigen3-dev libglew-dev libusb-1.0-0-dev libpng12-dev libtiff5-dev libopenexr-dev doxygen libboost-all-dev libflann1.8 libflann-dev prelink execstack libglew-dev libglm-dev libsoil-dev freeglut3-dev"
+        SYSTEM_PACKAGE_SET="build-essential checkinstall cmake pkg-config yasm libtiff5-dev libjpeg-dev libjasper-dev wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils ffmpeg libeigen3-dev libglew-dev libusb-1.0-0-dev libpng12-dev libtiff5-dev libopenexr-dev doxygen libboost-all-dev libflann1.8 libflann-dev prelink execstack libglew-dev libglm-dev libsoil-dev freeglut3-dev libxmu-dev libxi-dev"
     elif [ $SYSTEM_PACKAGE_TYPE == "archpkg" || $SYSTEM_PACKAGE_TYPE == "ebuild" ]; then
         SYSTEM_PACKAGE_SET="gvim ctags cscope git wget pcre libyaml python-pip python clang"
     fi
@@ -202,7 +202,35 @@ echo "$passwd" | sudo -S mkdir build && cd build
 echo "$passwd" | sudo -S cmake ..
 echo "$passwd" | sudo -S make -j8
 echo "$passwd" | sudo -S make install
+cd ../../
 
+# Install gflags
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Installing gflags 2.2.1 ..."
+echo "----------------------------------------------------------------------------"
+echo "$passwd" | sudo -S wget https://github.com/gflags/gflags/archive/v2.2.1.zip
+pwd
+echo "$passwd" | sudo -S unzip v2.2.1.zip && cd gflags-2.2.1/doc 
+echo "$passwd" | sudo -S wget https://github.com/gflags/gflags/blob/679df49798e2d9766975399baf063446e0957bba/index.html && cd ..
+echo "$passwd" | sudo -S mkdir build && cd build
+echo "$passwd" | sudo -S cmake -DBUILD_SHARED_LIBS=ON ..
+echo "$passwd" | sudo -S make -j8
+echo "$passwd" | sudo -S make install
+cd ../../
+
+# Install glog
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Installing glog 0.3.5 ..."
+echo "----------------------------------------------------------------------------"
+echo "$passwd" | sudo -S wget https://github.com/google/glog/archive/v0.3.5.zip
+pwd
+echo "$passwd" | sudo -S unzip v0.3.5.zip && cd glog-0.3.5
+echo "$passwd" | sudo -S export LDFLAGS='-L/usr/local/lib'
+echo "$passwd" | sudo -S ./configure --includedir=/usr/local/include/gflags
+echo "$passwd" | sudo -S make -j8
+echo "$passwd" | sudo -S make install
 
 cd ../../../
 echo "$passwd" | sudo -S rm -r download
