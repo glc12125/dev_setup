@@ -47,7 +47,7 @@ guess_system_package_manager(){
     if [ $SYSTEM_PACKAGE_TYPE == "rpm" ]; then
         SYSTEM_PACKAGE_SET="gvim ctags cscope git wget pcre-devel libyaml-devel python-pip python-devel clang-devel clang-libs"
     elif [ $SYSTEM_PACKAGE_TYPE == "deb" ]; then
-        SYSTEM_PACKAGE_SET="build-essential checkinstall cmake pkg-config yasm libtiff5-dev libjpeg-dev libjasper-dev wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils ffmpeg libeigen3-dev libglew-dev libusb-1.0-0-dev libpng12-dev libtiff5-dev libopenexr-dev doxygen libboost-all-dev libflann1.8 libflann-dev prelink execstack libglew-dev libglm-dev libsoil-dev freeglut3-dev libxmu-dev libxi-dev libpng++-dev"
+        SYSTEM_PACKAGE_SET="build-essential checkinstall cmake pkg-config yasm libtiff5-dev libjpeg-dev libjasper-dev wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils ffmpeg libeigen3-dev libglew-dev libusb-1.0-0-dev libpng12-dev libtiff5-dev libopenexr-dev doxygen libboost-all-dev libflann1.8 libflann-dev prelink execstack libglew-dev libglm-dev libsoil-dev freeglut3-dev libxmu-dev libxi-dev libpng++-dev autoconf automake libtool curl make g++ unzip"
     elif [ $SYSTEM_PACKAGE_TYPE == "archpkg" || $SYSTEM_PACKAGE_TYPE == "ebuild" ]; then
         SYSTEM_PACKAGE_SET="gvim ctags cscope git wget pcre libyaml python-pip python clang"
     fi
@@ -231,6 +231,21 @@ echo "$passwd" | sudo -S export LDFLAGS='-L/usr/local/lib'
 echo "$passwd" | sudo -S ./configure --includedir=/usr/local/include/gflags
 echo "$passwd" | sudo -S make -j8
 echo "$passwd" | sudo -S make install
+cd ../../
+
+# Install protobuf 3.5.1
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Installing protobuf 3.5.1 ..."
+echo "----------------------------------------------------------------------------"
+echo "$passwd" | sudo -S wget https://github.com/protocolbuffers/protobuf/releases/download/v3.5.1/protobuf-cpp-3.5.1.zip
+pwd
+echo "$passwd" | sudo -S unzip protobuf-cpp-3.5.1.zip && cd protobuf-3.5.1
+echo "$passwd" | sudo -S ./configure 
+echo "$passwd" | sudo -S make
+echo "$passwd" | sudo -S make check
+echo "$passwd" | sudo -S make install
+echo "$passwd" | sudo -S ldconfig
 
 cd ../../../
 echo "$passwd" | sudo -S rm -r download
