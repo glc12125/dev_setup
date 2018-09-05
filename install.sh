@@ -231,7 +231,7 @@ echo "$passwd" | sudo -S export LDFLAGS='-L/usr/local/lib'
 echo "$passwd" | sudo -S ./configure --includedir=/usr/local/include/gflags
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
-cd ../../
+cd ../
 
 # Install protobuf 3.5.1
 echo -e "\n"
@@ -247,5 +247,5 @@ echo "$passwd" | sudo -S make check
 echo "$passwd" | sudo -S make install
 echo "$passwd" | sudo -S ldconfig
 
-cd ../../../
+cd ../../
 echo "$passwd" | sudo -S rm -r download
