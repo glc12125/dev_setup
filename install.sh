@@ -120,7 +120,7 @@ echo "$passwd" | sudo -S wget https://github.com/opencv/opencv/archive/3.4.0.zip
 echo "$passwd" | sudo -S unzip opencv3.4.zip && cd opencv-3.4.0
 echo "$passwd" | sudo -S mkdir build && cd build
 echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..
-echo "$passwd" | sudo -S make -j 8
+echo "$passwd" | sudo -S make -j8
 echo "$passwd" | sudo -S make install
 echo "$passwd" | sudo -S /bin/bash -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
 echo "$passwd" | sudo -S ldconfig
@@ -135,7 +135,7 @@ echo "--------------------------------------------------------------------------
 echo "$passwd" | sudo -S git clone https://github.com/glfw/glfw && cd glfw
 echo "$passwd" | sudo -S mkdir build && cd build
 echo "$passwd" | sudo -S cmake ..
-echo "$passwd" | sudo -S make
+echo "$passwd" | sudo -S make -j8
 echo "$passwd" | sudo -S make install
 cd ../../
 
@@ -147,7 +147,7 @@ echo "--------------------------------------------------------------------------
 echo "$passwd" | sudo -S git clone https://github.com/ktossell/libuvc && cd libuvc
 echo "$passwd" | sudo -S mkdir build && cd build
 echo "$passwd" | sudo -S cmake ..
-echo "$passwd" | sudo -S make
+echo "$passwd" | sudo -S make -j8
 echo "$passwd" | sudo -S make install
 cd ../../
 
@@ -161,7 +161,7 @@ echo "$passwd" | sudo -S git checkout cad23ac468d202d371105676707ff5e217610008 #
 echo "$passwd" | sudo -S mkdir build && cd build
 echo "$passwd" | sudo sudo sh -c 'echo "" > ../test/log/CMakeLists.txt'
 echo "$passwd" | sudo -S cmake ..
-echo "$passwd" | sudo -S make
+echo "$passwd" | sudo -S make -j8
 echo "$passwd" | sudo -S make install
 cd ../../
 
@@ -173,7 +173,7 @@ echo "--------------------------------------------------------------------------
 echo "$passwd" | sudo -S git clone git://github.com/OctoMap/octomap.git && cd octomap
 echo "$passwd" | sudo -S mkdir build && cd build
 echo "$passwd" | sudo -S cmake ..
-echo "$passwd" | sudo -S make
+echo "$passwd" | sudo -S make -j8
 echo "$passwd" | sudo -S make install
 cd ../../
 
@@ -186,7 +186,7 @@ echo "$passwd" | sudo -S wget http://www.vtk.org/files/release/7.1/VTK-7.1.0.tar
 echo "$passwd" | sudo -S tar -xf VTK-7.1.0.tar.gz && cd VTK-7.1.0
 echo "$passwd" | sudo -S mkdir build && cd build
 echo "$passwd" | sudo -S cmake ..
-echo "$passwd" | sudo -S make
+echo "$passwd" | sudo -S make -j8
 echo "$passwd" | sudo -S make install
 cd ../../
 
