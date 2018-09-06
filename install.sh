@@ -112,14 +112,15 @@ echo "$passwd" | sudo -S mkdir download && cd download
 # Install opencv 3.2
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
-echo "Installing opencv 3.4 ..."
+echo "Installing opencv 3.2.0 and opencv_contrib 3.2.0 ..."
 echo "----------------------------------------------------------------------------"
 echo "$passwd" | sudo -S mkdir -p $DEV_INSTALL_DIR_DEFAULT/download
 cd $DEV_INSTALL_DIR_DEFAULT/download
-echo "$passwd" | sudo -S wget https://github.com/opencv/opencv/archive/3.4.0.zip -O opencv3.4.zip
-echo "$passwd" | sudo -S unzip opencv3.4.zip && cd opencv-3.4.0
+echo "$passwd" | sudo -S wget https://github.com/opencv/opencv/archive/3.2.0.zip -O opencv3.2.zip
+echo "$passwd" | sudo -S wget https://github.com/opencv/opencv_contrib/archive/3.2.0.zip -O opencv_contrib-3.2.0.zip
+echo "$passwd" | sudo -S unzip opencv3.2.zip && unzip opencv_contrib-3.2.0.zip && cd opencv-3.2.0
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..
+echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_VTK=ON -D WITH_CUDA=OFF -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.2.0/modules ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 echo "$passwd" | sudo -S /bin/bash -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
@@ -157,7 +158,7 @@ echo "--------------------------------------------------------------------------
 echo "Installing Pangolin ..."
 echo "----------------------------------------------------------------------------"
 echo "$passwd" | sudo -S git clone https://github.com/stevenlovegrove/Pangolin.git && cd Pangolin
-echo "$passwd" | sudo -S git checkout cad23ac468d202d371105676707ff5e217610008 # due to issue reported in https://github.com/stevenlovegrove/Pangolin/issues/268
+#echo "$passwd" | sudo -S git checkout cad23ac468d202d371105676707ff5e217610008 # due to issue reported in https://github.com/stevenlovegrove/Pangolin/issues/268
 echo "$passwd" | sudo -S mkdir build && cd build
 echo "$passwd" | sudo sudo sh -c 'echo "" > ../test/log/CMakeLists.txt'
 echo "$passwd" | sudo -S cmake ..
