@@ -182,8 +182,8 @@ echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Installing vtk (For pcl visualization) ..."
 echo "----------------------------------------------------------------------------"
-echo "$passwd" | sudo -S wget http://www.vtk.org/files/release/7.1/VTK-7.1.0.tar.gz
-echo "$passwd" | sudo -S tar -xf VTK-7.1.0.tar.gz && cd VTK-7.1.0
+echo "$passwd" | sudo -S wget http://www.vtk.org/files/release/6.2/VTK-6.2.0.tar.gz
+echo "$passwd" | sudo -S tar -xf VTK-6.2.0.tar.gz && cd VTK-6.2.0
 echo "$passwd" | sudo -S mkdir build && cd build
 echo "$passwd" | sudo -S cmake ..
 echo "$passwd" | sudo -S make -j$(nproc)
