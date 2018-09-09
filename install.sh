@@ -1,5 +1,5 @@
 #!/bin/bash
-# yavide installation script
+# dev environment installation script
 
 #####################################################################################################
 # Variables
@@ -108,6 +108,7 @@ echo "$passwd" | sudo -S mkdir -p $DEV_INSTALL_DIR_DEFAULT
 #####################################################################################################
 
 echo "$passwd" | sudo -S mkdir download && cd download
+echo "$passwd" | sudo -S mkdir ~/libs
 
 # Install opencv 3.2
 echo -e "\n"
@@ -120,7 +121,7 @@ echo "$passwd" | sudo -S wget https://github.com/opencv/opencv/archive/3.2.0.zip
 echo "$passwd" | sudo -S wget https://github.com/opencv/opencv_contrib/archive/3.2.0.zip -O opencv_contrib-3.2.0.zip
 echo "$passwd" | sudo -S unzip opencv3.2.zip && unzip opencv_contrib-3.2.0.zip && cd opencv-3.2.0
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_VTK=ON -D WITH_CUDA=OFF -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.2.0/modules ..
+echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=~/libs -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_VTK=ON -D WITH_CUDA=OFF -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.2.0/modules ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 echo "$passwd" | sudo -S /bin/bash -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
@@ -135,7 +136,7 @@ echo "Installing GLFW ..."
 echo "----------------------------------------------------------------------------"
 echo "$passwd" | sudo -S git clone https://github.com/glfw/glfw && cd glfw
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake ..
+echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 cd ../../
@@ -147,7 +148,7 @@ echo "Installing libuvc ..."
 echo "----------------------------------------------------------------------------"
 echo "$passwd" | sudo -S git clone https://github.com/ktossell/libuvc && cd libuvc
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake ..
+echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 cd ../../
@@ -161,7 +162,7 @@ echo "$passwd" | sudo -S git clone https://github.com/stevenlovegrove/Pangolin.g
 #echo "$passwd" | sudo -S git checkout cad23ac468d202d371105676707ff5e217610008 # due to issue reported in https://github.com/stevenlovegrove/Pangolin/issues/268
 echo "$passwd" | sudo -S mkdir build && cd build
 echo "$passwd" | sudo sudo sh -c 'echo "" > ../test/log/CMakeLists.txt'
-echo "$passwd" | sudo -S cmake ..
+echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 cd ../../
@@ -173,7 +174,7 @@ echo "Installing OctoMap ..."
 echo "----------------------------------------------------------------------------"
 echo "$passwd" | sudo -S git clone git://github.com/OctoMap/octomap.git && cd octomap
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake ..
+echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 cd ../../
@@ -186,7 +187,7 @@ echo "--------------------------------------------------------------------------
 echo "$passwd" | sudo -S wget http://www.vtk.org/files/release/6.2/VTK-6.2.0.tar.gz
 echo "$passwd" | sudo -S tar -xf VTK-6.2.0.tar.gz && cd VTK-6.2.0
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake ..
+echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 cd ../../
@@ -200,7 +201,7 @@ echo "$passwd" | sudo -S wget https://github.com/PointCloudLibrary/pcl/archive/p
 pwd
 echo "$passwd" | sudo -S tar -xf pcl-1.8.0.tar.gz && cd pcl-pcl-1.8.0
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake ..
+echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 cd ../../
@@ -215,7 +216,7 @@ pwd
 echo "$passwd" | sudo -S unzip v2.2.1.zip && cd gflags-2.2.1/doc 
 echo "$passwd" | sudo -S wget https://github.com/gflags/gflags/blob/679df49798e2d9766975399baf063446e0957bba/index.html && cd ..
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -DBUILD_SHARED_LIBS=ON ..
+echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs -DBUILD_SHARED_LIBS=ON ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 cd ../../
@@ -229,7 +230,7 @@ echo "$passwd" | sudo -S wget https://github.com/google/glog/archive/v0.3.5.zip
 pwd
 echo "$passwd" | sudo -S unzip v0.3.5.zip && cd glog-0.3.5
 echo "$passwd" | sudo -S export LDFLAGS='-L/usr/local/lib'
-echo "$passwd" | sudo -S ./configure --includedir=/usr/local/include/gflags
+echo "$passwd" | sudo -S ./configure --includedir=/usr/local/include/gflags --prefix=~/libs
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 cd ../
@@ -242,7 +243,7 @@ echo "--------------------------------------------------------------------------
 echo "$passwd" | sudo -S wget https://github.com/protocolbuffers/protobuf/releases/download/v3.5.1/protobuf-cpp-3.5.1.zip
 pwd
 echo "$passwd" | sudo -S unzip protobuf-cpp-3.5.1.zip && cd protobuf-3.5.1
-echo "$passwd" | sudo -S ./configure 
+echo "$passwd" | sudo -S ./configure --prefix=~/libs
 echo "$passwd" | sudo -S make
 echo "$passwd" | sudo -S make check
 echo "$passwd" | sudo -S make install
