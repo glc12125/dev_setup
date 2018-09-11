@@ -162,10 +162,10 @@ echo "Cloning RotorS ..."
 echo "$passwd" | sudo -S git clone https://github.com/wilselby/rotors_simulator
 echo "Done !"
 echo "Installing RotorS"
-cd rotors_simulator
+
+cd $ROS_WORKSPACE
 pwd
 echo "$passwd" | sudo -S rosdep install --from-paths src --ignore-src --rosdistro indigo -y
-cd ../
 echo "Done !"
 
 echo -e "\n"
