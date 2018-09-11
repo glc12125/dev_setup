@@ -23,7 +23,6 @@ guess_system_package_manager(){
     if [ $SYSTEM_PACKAGE_TYPE == "deb" ]; then
         SYSTEM_PACKAGE_SET="python-rosinstall python-rosinstall-generator python-wstool build-essential checkinstall cmake pkg-config yasm wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev python-dev python-numpy doxygen libboost-all-dev autoconf automake libtool curl make g++ unzip software-properties-common"
     fi
-
 }
 
 print_usage(){
@@ -70,14 +69,14 @@ stty $stty_orig     # restore terminal setting.
 #####################################################################################################
 #echo "$passwd" | sudo -S sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 #echo "$passwd" | sudo -S apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
-#echo "$passwd" | sudo -S $SYSTEM_PACKAGE_MANAGER_UPDATE
-#echo "$passwd" | sudo -S $SYSTEM_PACKAGE_MANAGER_INSTALL $SYSTEM_PACKAGE_SET
-#echo "$passwd" | sudo -S $SYSTEM_PACKAGE_MANAGER_INSTALL $ROS_PACKAGE_SET
-#echo "$passwd" | sudo -S rosdep init
-#echo "$passwd" | sudo -S rosdep fix-permissions
-#rosdep update
-#echo "$passwd" | sudo -S echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
-#source ~/.bashrc
+echo "$passwd" | sudo -S $SYSTEM_PACKAGE_MANAGER_UPDATE
+echo "$passwd" | sudo -S $SYSTEM_PACKAGE_MANAGER_INSTALL $SYSTEM_PACKAGE_SET
+echo "$passwd" | sudo -S $SYSTEM_PACKAGE_MANAGER_INSTALL $ROS_PACKAGE_SET
+echo "$passwd" | sudo -S rosdep init
+echo "$passwd" | sudo -S rosdep fix-permissions
+rosdep update
+echo "$passwd" | sudo -S echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
 
 # Set up catkin workspace, note workspace is recommended to match that in build.sh for consistency
 workspace=/home/Development

@@ -34,6 +34,7 @@ RUN apt-get install -y                                           \
 
 # Get rosinstall and some additional dependencies for wilselby
 RUN apt-get -y install python-rosinstall          \
+                       ros-indigo-moveit          \
                        ros-indigo-octomap-msgs    \
                        ros-indigo-joy             \
                        ros-indigo-geodesy         \
