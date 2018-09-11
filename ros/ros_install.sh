@@ -78,6 +78,13 @@ rosdep update
 echo "$passwd" | sudo -S echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 
+
+# Install mavros but from shadow repo to get latest version earlier
+echo "$passwd" | sudo -S sh -c 'echo "deb http://packages.ros.org/ros-shadow-fixed/ubuntu/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-shadow.list'
+echo "$passwd" | sudo -S apt-get update
+echo "$passwd" | sudo -S apt-get -y install ros-indigo-mavros \
+                                    ros-indigo-mavros-extras
+
 # Set up catkin workspace, note workspace is recommended to match that in build.sh for consistency
 workspace=/home/$CURRENT_USER/Development
 ROS_WORKSPACE="${workspace}/ros"
