@@ -42,7 +42,9 @@ RUN apt-get -y install python-rosinstall          \
                        ros-indigo-octomap-ros     \
                        libsdformat1               \
                        gazebo2                    \
-                       unzip
+                       unzip                      \
+                       dialog                     \
+                       apt-utils
 
 # Install mavros but from shadow repo to get latest version earlier
 RUN sh -c 'echo "deb http://packages.ros.org/ros-shadow-fixed/ubuntu/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-shadow.list'
@@ -56,7 +58,7 @@ RUN apt-get install -y x11-apps python-pip build-essential
 RUN pip install catkin_tools
 
 # Clean up
-RUN apt-get autoremove
+RUN apt-get -y autoremove
 
 # Make SSH available
 EXPOSE 22
@@ -64,6 +66,12 @@ EXPOSE 22
 # Mount the user's home directory
 VOLUME "${home}"
 
+# Clone user into docker image and set up X11 sharing 
+RUN \
+  echo "${user}:x:${uid}:${uid}:${user},,,:${home}:${shell}" >> /etc/passwd && \
+  echo "${user}:x:${uid}:" >> /etc/group && \
+  echo "${user} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${user}" && \
+  chmod 0440 "/etc/sudoers.d/${user}"
 # This is required for sharing Xauthority
 ENV QT_X11_NO_MITSHM=1
 
