@@ -7,7 +7,7 @@
 SYSTEM_PACKAGE_MANAGER=""
 SYSTEM_PACKAGE_TYPE=""
 SYSTEM_PACKAGE_SET=""
-ROS_PACKAGE_SET="ros-kinetic-desktop-full"
+ROS_PACKAGE_SET="ros-indigo-desktop-full"
 DEV_INSTALL_DIR_DEFAULT="/opt/tmp"
 #####################################################################################################
 # Helper functions
@@ -95,20 +95,32 @@ pwd
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
-echo "Cloning mav_comm ..."
-echo "$passwd" | sudo -S git clone https://github.com/PX4/mav_comm.git
-echo "Done !"
-
-echo -e "\n"
-echo "----------------------------------------------------------------------------"
 echo "Cloning glog_catkin ..."
 echo "$passwd" | sudo -S git clone https://github.com/ethz-asl/glog_catkin.git
+cp glog_catkin/fix-unused-typedef-warning.patch .
 echo "Done !"
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Cloning catkin_simple ..."
 echo "$passwd" | sudo -S git clone https://github.com/catkin/catkin_simple.git
+echo "Done !"
+
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Compiling glog_catkin first via catkin_make ..."
+cd $ROS_WORKSPACE
+pwd
+source devel/setup.bash
+catkin_make
+
+cd $ROS_WORKSPACE/src
+pwd
+
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Cloning mav_comm ..."
+echo "$passwd" | sudo -S git clone https://github.com/PX4/mav_comm.git
 echo "Done !"
 
 echo -e "\n"
@@ -135,7 +147,7 @@ echo "Compiling ROS workspace via catkin_make ..."
 cd $ROS_WORKSPACE
 pwd
 source devel/setup.bash
-echo "$passwd" | sudo -S catkin_make
+catkin_make
 echo "Done !"
 
 
