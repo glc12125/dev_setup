@@ -101,6 +101,17 @@ echo "Done !"
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
+echo "Compiling gflags_catkin first via catkin_make ..."
+ROS_WORKSPACE="${workspace}/ros"
+cd $ROS_WORKSPACE
+pwd
+source devel/setup.bash
+catkin_make
+
+cd $ROS_WORKSPACE/src
+pwd
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
 echo "Cloning glog_catkin ..."
 echo "$passwd" | sudo -S git clone https://github.com/ethz-asl/glog_catkin.git
 cp glog_catkin/fix-unused-typedef-warning.patch .
