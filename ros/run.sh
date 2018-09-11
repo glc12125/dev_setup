@@ -8,7 +8,6 @@ fi
 
 # Get this script's path
 pushd `dirname $0` > /dev/null
-SCRIPTPATH=`pwd`
 popd > /dev/null
 
 set -e

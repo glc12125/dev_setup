@@ -64,17 +64,17 @@ EXPOSE 22
 # Mount the user's home directory
 VOLUME "${home}"
 
-ENV HOME ${home}
+# Replace 1000 with your user / group id
+RUN export uid=1000 gid=1000 && \
+    mkdir -p /home/developer && \
+    echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:${shell}" >> /etc/passwd && \
+    echo "developer:x:${uid}:" >> /etc/group && \
+    echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
+    chmod 0440 /etc/sudoers.d/developer && \
+    chown ${uid}:${gid} -R /home/developer
 
-# Clone user into docker image and set up X11 sharing 
-RUN mkdir -p /home/${user} && \
-    echo "${user}:x:${uid}:${gid}:${user},,,:/home/${user}:/bin/bash" >> /etc/passwd && \
-    echo "${user}:x:${uid}:" >> /etc/group && \
-    echo "${user} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${user} && \
-    chmod 0440 /etc/sudoers.d/${user} && \
-    chown ${uid}:${gid} -R /home/${user}
-# Switch to user
-USER "${user}"
+USER developer
+ENV HOME /home/developer
 
 # This is required for sharing Xauthority
 ENV QT_X11_NO_MITSHM=1
