@@ -95,6 +95,12 @@ pwd
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
+echo "Cloning gflags_catkin ..."
+echo "$passwd" | sudo -S git clone https://github.com/ethz-asl/gflags_catkin.git
+echo "Done !"
+
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
 echo "Cloning glog_catkin ..."
 echo "$passwd" | sudo -S git clone https://github.com/ethz-asl/glog_catkin.git
 cp glog_catkin/fix-unused-typedef-warning.patch .
