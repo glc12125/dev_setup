@@ -114,7 +114,7 @@ pwd
 source devel/setup.bash
 catkin_make
 
-cd $ROS_WORKSPACE/src
+cd ./src
 pwd
 
 echo -e "\n"
