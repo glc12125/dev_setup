@@ -177,6 +177,9 @@ source devel/setup.bash
 catkin_make
 echo "Done !"
 
+# This is necessary to make sure all changes can be picked up
+source devel/setup.bash
+
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
