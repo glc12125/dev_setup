@@ -21,6 +21,12 @@ RUN apt-get install -y          \
   libwayland-egl1-mesa-lts-wily \
   libopenvg1-mesa
 
+# The ROS-desktop
+RUN apt-get install -y ros-indigo-desktop-full
+RUN rosdep init
+RUN rosdep update
+RUN sh -c 'echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc'
+
 # Dependencies required to build rviz
 RUN apt-get install -y                                           \
   qt4-dev-tools                                                  \
@@ -45,8 +51,6 @@ RUN apt-get update
 RUN apt-get -y install ros-indigo-mavros \
                ros-indigo-mavros-extras
 
-# The rest of ROS-desktop
-RUN apt-get install -y ros-indigo-desktop-full
 
 # Additional development tools
 RUN apt-get install -y x11-apps python-pip build-essential
@@ -60,6 +64,17 @@ VOLUME "${home}"
 
 # This is required for sharing Xauthority
 ENV QT_X11_NO_MITSHM=1
-ENV CATKIN_TOPLEVEL_WS="${workspace}/devel"
+
+# Set up catkin workspace
+ENV ROS_WORKSPACE="${workspace}/ros"
+RUN mkdir -p ROS_WORKSPACE
+RUN mkdir -p $ROS_WORKSPACE/src
+RUN cd $ROS_WORKSPACE/src
+RUN catkin_init_workspace
+RUN cd $ROS_WORKSPACE
+RUN catkin_make
+RUN sh -c "echo 'source $ROS_WORKSPACE/devel/setup.bash' >> ~/.bashrc"
+RUN source ~/.bashrc
+
 # Switch to the workspace
 WORKDIR ${workspace}
