@@ -92,6 +92,11 @@ source ~/.bashrc
 cd $ROS_WORKSPACE/src
 pwd
 
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Cloning catkin_simple ..."
+echo "$passwd" | sudo -S git clone https://github.com/catkin/catkin_simple.git
+echo "Done !"
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
@@ -108,6 +113,7 @@ pwd
 source devel/setup.bash
 catkin_make
 
+ROS_WORKSPACE="${workspace}/ros"
 cd $ROS_WORKSPACE/src
 pwd
 echo -e "\n"
@@ -115,12 +121,6 @@ echo "--------------------------------------------------------------------------
 echo "Cloning glog_catkin ..."
 echo "$passwd" | sudo -S git clone https://github.com/ethz-asl/glog_catkin.git
 cp glog_catkin/fix-unused-typedef-warning.patch .
-echo "Done !"
-
-echo -e "\n"
-echo "----------------------------------------------------------------------------"
-echo "Cloning catkin_simple ..."
-echo "$passwd" | sudo -S git clone https://github.com/catkin/catkin_simple.git
 echo "Done !"
 
 echo -e "\n"
