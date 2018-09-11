@@ -81,8 +81,8 @@ source ~/.bashrc
 # Set up catkin workspace, note workspace is recommended to match that in build.sh for consistency
 workspace=/home/Development
 ROS_WORKSPACE="${workspace}/ros"
-mkdir -p ROS_WORKSPACE
-mkdir -p $ROS_WORKSPACE/src
+sudo mkdir -p ROS_WORKSPACE
+sudo mkdir -p $ROS_WORKSPACE/src
 cd $ROS_WORKSPACE/src
 catkin_init_workspace
 cd $ROS_WORKSPACE
