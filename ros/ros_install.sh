@@ -120,7 +120,7 @@ echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Cloning glog_catkin ..."
 echo "$passwd" | sudo -S git clone https://github.com/ethz-asl/glog_catkin.git
-cp glog_catkin/fix-unused-typedef-warning.patch .
+echo "$passwd" | sudo -S cp glog_catkin/fix-unused-typedef-warning.patch .
 echo "Done !"
 
 echo -e "\n"
