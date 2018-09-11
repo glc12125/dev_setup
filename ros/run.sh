@@ -12,6 +12,7 @@ popd > /dev/null
 
 set -e
 
+xhost + # Allow any connections to X server
 # Run the container with shared X11
 docker run\
   --net=host\
