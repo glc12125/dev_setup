@@ -89,9 +89,11 @@ catkin_init_workspace
 cd $ROS_WORKSPACE
 catkin_make
 sh -c "echo 'source $ROS_WORKSPACE/devel/setup.bash' >> ~/.bashrc"
-sh -c 'source ~/.bashrc'
+source ~/.bashrc
 cd $ROS_WORKSPACE/src
 pwd
+
+
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Cloning mav_comm ..."
