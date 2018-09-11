@@ -21,4 +21,5 @@ docker run\
   -e DOCKER=1\
   -v "$HOME/indigo_work_space:$HOME/Development:rw"\
   -v "/tmp/.X11-unix:/tmp/.X11-unix:rw"\
+  --privileged -v /dev/bus/usb:/dev/bus/usb\
   -it $1 $SHELL
