@@ -54,6 +54,9 @@ RUN apt-get -y install ros-indigo-mavros \
 RUN apt-get install -y x11-apps python-pip build-essential
 RUN pip install catkin_tools
 
+# Clean up
+RUN apt-get autoremove
+
 # Make SSH available
 EXPOSE 22
 
