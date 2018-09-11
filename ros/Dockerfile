@@ -8,7 +8,7 @@ ARG workspace
 ARG shell
 
 # Basic Utilities
-RUN apt-get -y update && apt-get install -y zsh screen tree sudo ssh synaptic
+RUN apt-get -y update && apt-get install -y zsh screen tree sudo ssh synaptic dialog apt-utils
 
 # Latest X11 / mesa GL
 RUN apt-get install -y          \
@@ -42,9 +42,7 @@ RUN apt-get -y install python-rosinstall          \
                        ros-indigo-octomap-ros     \
                        libsdformat1               \
                        gazebo2                    \
-                       unzip                      \
-                       dialog                     \
-                       apt-utils
+                       unzip                      
 
 # Install mavros but from shadow repo to get latest version earlier
 RUN sh -c 'echo "deb http://packages.ros.org/ros-shadow-fixed/ubuntu/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-shadow.list'
@@ -72,6 +70,9 @@ RUN \
   echo "${user}:x:${uid}:" >> /etc/group && \
   echo "${user} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${user}" && \
   chmod 0440 "/etc/sudoers.d/${user}"
+# Switch to user
+USER "${user}"
+
 # This is required for sharing Xauthority
 ENV QT_X11_NO_MITSHM=1
 
