@@ -23,9 +23,6 @@ RUN apt-get install -y          \
 
 # The ROS-desktop
 RUN apt-get install -y ros-indigo-desktop-full
-RUN rosdep init
-RUN rosdep update
-RUN sh -c 'echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc'
 
 # Dependencies required to build rviz
 RUN apt-get install -y                                           \
@@ -64,17 +61,6 @@ VOLUME "${home}"
 
 # This is required for sharing Xauthority
 ENV QT_X11_NO_MITSHM=1
-
-# Set up catkin workspace
-ENV ROS_WORKSPACE="${workspace}/ros"
-RUN mkdir -p ROS_WORKSPACE
-RUN mkdir -p $ROS_WORKSPACE/src
-RUN cd $ROS_WORKSPACE/src
-RUN catkin_init_workspace
-RUN cd $ROS_WORKSPACE
-RUN catkin_make
-RUN sh -c "echo 'source $ROS_WORKSPACE/devel/setup.bash' >> ~/.bashrc"
-RUN source ~/.bashrc
 
 # Switch to the workspace
 WORKDIR ${workspace}
