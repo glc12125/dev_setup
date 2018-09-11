@@ -64,12 +64,15 @@ EXPOSE 22
 # Mount the user's home directory
 VOLUME "${home}"
 
+ENV HOME ${home}
+
 # Clone user into docker image and set up X11 sharing 
-RUN \
-  echo "${user}:x:${uid}:${uid}:${user},,,:${home}:${shell}" >> /etc/passwd && \
-  echo "${user}:x:${uid}:" >> /etc/group && \
-  echo "${user} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${user}" && \
-  chmod 0440 "/etc/sudoers.d/${user}"
+RUN mkdir -p /home/${user} && \
+    echo "${user}:x:${uid}:${gid}:${user},,,:/home/${user}:/bin/bash" >> /etc/passwd && \
+    echo "${user}:x:${uid}:" >> /etc/group && \
+    echo "${user} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${user} && \
+    chmod 0440 /etc/sudoers.d/${user} && \
+    chown ${uid}:${gid} -R /home/${user}
 # Switch to user
 USER "${user}"
 

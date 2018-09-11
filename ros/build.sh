@@ -8,7 +8,7 @@ fi
 
 # Get this script's path
 pushd `dirname $0` > /dev/null
-SCRIPTPATH=/home/Development
+SCRIPTPATH=/home/$USER/Development
 popd > /dev/null
 
 # Build the docker image

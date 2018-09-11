@@ -79,7 +79,7 @@ echo "$passwd" | sudo -S echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 
 # Set up catkin workspace, note workspace is recommended to match that in build.sh for consistency
-workspace=/home/Development
+workspace=/home/$CURRENT_USER/Development
 ROS_WORKSPACE="${workspace}/ros"
 sudo mkdir -p ROS_WORKSPACE
 sudo mkdir -p $ROS_WORKSPACE/src
