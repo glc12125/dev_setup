@@ -90,6 +90,7 @@ workspace=/home/$CURRENT_USER/Development
 ROS_WORKSPACE="${workspace}/ros"
 sudo mkdir -p ROS_WORKSPACE
 sudo mkdir -p $ROS_WORKSPACE/src
+sudo chown 1000:1000 -R ROS_WORKSPACE
 cd $ROS_WORKSPACE/src
 catkin_init_workspace
 cd $ROS_WORKSPACE
