@@ -97,6 +97,7 @@ cd $ROS_WORKSPACE
 catkin_make
 sh -c "echo 'source $ROS_WORKSPACE/devel/setup.bash' >> ~/.bashrc"
 source ~/.bashrc
+ROS_WORKSPACE="${workspace}/ros"
 cd $ROS_WORKSPACE/src
 pwd
 
