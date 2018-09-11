@@ -75,7 +75,7 @@ echo "$passwd" | sudo -S $SYSTEM_PACKAGE_MANAGER_INSTALL $ROS_PACKAGE_SET
 echo "$passwd" | sudo -S rosdep init
 echo "$passwd" | sudo -S rosdep fix-permissions
 rosdep update
-echo "$passwd" | sudo -S echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+echo "$passwd" | sudo -S echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 
 # Set up catkin workspace, note workspace is recommended to match that in build.sh for consistency
