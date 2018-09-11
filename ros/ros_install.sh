@@ -21,7 +21,7 @@ guess_system_package_manager(){
     fi
 
     if [ $SYSTEM_PACKAGE_TYPE == "deb" ]; then
-        SYSTEM_PACKAGE_SET="python-rosinstall python-rosinstall-generator python-wstool build-essential checkinstall cmake pkg-config yasm wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev python-dev python-numpy doxygen libboost-all-dev autoconf automake libtool curl make g++ unzip"
+        SYSTEM_PACKAGE_SET="python-rosinstall python-rosinstall-generator python-wstool build-essential checkinstall cmake pkg-config yasm wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev python-dev python-numpy doxygen libboost-all-dev autoconf automake libtool curl make g++ unzip software-properties-common"
     fi
 
 }
@@ -79,7 +79,17 @@ stty $stty_orig     # restore terminal setting.
 #echo "$passwd" | sudo -S echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
 #source ~/.bashrc
 
-# Assuming ROS_WORSPACE is defined and initialized with and build with catkin_make
+# Set up catkin workspace, note workspace is recommended to match that in build.sh for consistency
+workspace=/home/Development
+ROS_WORKSPACE="${workspace}/ros"
+mkdir -p ROS_WORKSPACE
+mkdir -p $ROS_WORKSPACE/src
+cd $ROS_WORKSPACE/src
+catkin_init_workspace
+cd $ROS_WORKSPACE
+catkin_make
+sh -c "echo 'source $ROS_WORKSPACE/devel/setup.bash' >> ~/.bashrc"
+sh -c 'source ~/.bashrc'
 cd $ROS_WORKSPACE/src
 pwd
 echo -e "\n"
@@ -115,6 +125,7 @@ echo "Installing RotorS"
 cd rotors_simulator
 pwd
 echo "$passwd" | sudo -S rosdep install --from-paths src --ignore-src --rosdistro indigo -y
+cd ../
 echo "Done !"
 
 echo -e "\n"
