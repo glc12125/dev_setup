@@ -6,7 +6,23 @@ if [ "$#" -ne 1 ]; then
   return 1
 fi
 
-NVIDIA_DRIVER=NVIDIA-Linux-x86_64-384.130.run  # path to nvidia driver
+
+fileFound=false
+while [[ '$fileFound' = false ]] # While string is empty...
+do
+    read -p "Enter the NVIDIA driver run file: " runFile # Ask the user to enter a run file
+    if [ '$runFile' = '' ]; then
+		runFile="NVIDIA-Linux-x86_64-384.130.run"
+	fi
+    if [ ! -f $runFile ]; then
+    	echo "Run file not found!"
+    	fileFound=false
+    else
+    	fileFound=true
+	fi
+done 
+
+NVIDIA_DRIVER=$runFile  # path to nvidia driver
 
 cp ${NVIDIA_DRIVER} NVIDIA-DRIVER.run
 
