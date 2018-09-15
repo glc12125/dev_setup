@@ -1,12 +1,4 @@
 FROM scratch
-
-# Arguments
-ARG user
-ARG uid
-ARG home
-ARG workspace
-ARG shell
-
 ADD ubuntu-xenial-core-cloudimg-amd64-root.tar.gz /
 
 # a few minor docker-specific tweaks
@@ -52,53 +44,5 @@ RUN sed -i 's/^#\s*\(deb.*universe\)$/\1/g' /etc/apt/sources.list
 # See: https://github.com/systemd/systemd/blob/aa0c34279ee40bce2f9681b496922dedbadfca19/src/basic/virt.c#L434
 RUN mkdir -p /run/systemd && echo 'docker' > /run/systemd/container
 
-# Basic Utilities
-RUN apt-get -y update
-RUN apt-get install -y zsh screen        \
-                       tree sudo         \
-                       ssh vim vim-gtk   \
-                       synaptic dialog   \
-                       apt-utils         \
-                       module-init-tools \
-                       mesa-utils        \
-                       binutils          \
-                       git
-
-# Mount the user's home directory
-VOLUME "${home}"
-
-# Replace 1000 with your user / group id
-RUN export uid=1000 gid=1000 && \
-    mkdir -p /home/developer && \
-    echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:${shell}" >> /etc/passwd && \
-    echo "developer:x:${uid}:" >> /etc/group && \
-    echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
-    chmod 0440 /etc/sudoers.d/developer && \
-    chown ${uid}:${gid} -R /home/developer
-
-USER developer
-
 # overwrite this with 'CMD []' in a dependent Dockerfile
 CMD ["/bin/bash"]
-
-# Install Nvidia driver, the same version as the host machine
-ADD NVIDIA-DRIVER.run /tmp/NVIDIA-DRIVER.run
-RUN sudo sh /tmp/NVIDIA-DRIVER.run -a -N --ui=none --no-kernel-module
-RUN sudo rm /tmp/NVIDIA-DRIVER.run
-
-# Make SSH available
-EXPOSE 22
-
-ENV HOME /home/developer
-
-# This is required for sharing Xauthority
-ENV QT_X11_NO_MITSHM=1
-
-# run the setup script
-RUN sudo mkdir -p ${workspace} && cd ${workspace}
-
-RUN sudo git clone https://github.com/glc12125/dev_setup.git
-RUN cd dev_setup/native && bash install.sh
-
-# Switch to the workspace
-WORKDIR ${workspace}
