@@ -23,7 +23,7 @@ USER developer
 
 # Basic Utilities
 RUN sudo apt-get -y update
-RUN sudo apt-get install -y zsh screen tree sudo ssh synaptic dialog apt-utils
+RUN sudo apt-get install -y zsh screen tree sudo ssh vim vim-gtk synaptic dialog apt-utils
 
 # Latest X11 / mesa GL
 RUN sudo apt-get install -y          \
