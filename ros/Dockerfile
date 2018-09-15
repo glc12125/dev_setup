@@ -72,10 +72,10 @@ ENV HOME /home/developer
 ENV QT_X11_NO_MITSHM=1
 
 # run the setup script
-RUN cd /home/developer/Development/
+RUN sudo mkdir -p ${workspace} && cd ${workspace}
 
 RUN sudo git clone https://github.com/glc12125/dev_setup.git
-RUN cd dev_setup
+RUN cd dev_setup/ros && bash ros_install.sh
 
 # Switch to the workspace
 WORKDIR ${workspace}
