@@ -85,6 +85,18 @@ echo "$passwd" | sudo -S apt-get update
 echo "$passwd" | sudo -S apt-get -y install ros-indigo-mavros \
                                     ros-indigo-mavros-extras
 
+# Get rosinstall and some additional dependencies for wilselby
+echo "$passwd" | sudo -S apt-get -y install python-rosinstall          \
+                                            ros-indigo-moveit          \
+                                            ros-indigo-move-base       \
+                                            ros-indigo-octomap-msgs    \
+                                            ros-indigo-joy             \
+                                            ros-indigo-geodesy         \
+                                            ros-indigo-octomap-ros     \
+                                            libsdformat1               \
+                                            gazebo2                    \
+                                            unzip                 
+
 # Set up catkin workspace, note workspace is recommended to match that in build.sh for consistency
 workspace=/home/$CURRENT_USER/Development
 ROS_WORKSPACE="${workspace}/ros"

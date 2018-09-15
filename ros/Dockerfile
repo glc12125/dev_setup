@@ -48,19 +48,7 @@ RUN sudo apt-get install -y                                           \
   libqt5core5a libqt5dbus5 libqt5gui5 libwayland-client0         \
   libwayland-server0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
   libxcb-render-util0 libxcb-util0 libxcb-xkb1 libxkbcommon-x11-0\
-  libxkbcommon0
-
-# Get rosinstall and some additional dependencies for wilselby
-RUN sudo apt-get -y install python-rosinstall          \
-                       ros-indigo-moveit          \
-                       ros-indigo-move-base       \
-                       ros-indigo-octomap-msgs    \
-                       ros-indigo-joy             \
-                       ros-indigo-geodesy         \
-                       ros-indigo-octomap-ros     \
-                       libsdformat1               \
-                       gazebo2                    \
-                       unzip                      
+  libxkbcommon0                     
 
 
 # Additional development tools
@@ -82,6 +70,12 @@ ENV HOME /home/developer
 
 # This is required for sharing Xauthority
 ENV QT_X11_NO_MITSHM=1
+
+# run the setup script
+RUN cd /home/developer/Development/
+
+RUN sudo git clone https://github.com/glc12125/dev_setup.git
+RUN cd dev_setup
 
 # Switch to the workspace
 WORKDIR ${workspace}
