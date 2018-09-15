@@ -8,22 +8,25 @@ fi
 
 
 fileFound=false
-while [[ '$fileFound' = false ]] # While string is empty...
+while [[ "$fileFound" = false ]]
 do
-    read -p "Enter the NVIDIA driver run file: " runFile # Ask the user to enter a run file
-    if [ '$runFile' = '' ]; then
-		runFile="NVIDIA-Linux-x86_64-384.130.run"
-	fi
+    read -p "Enter the NVIDIA driver run file (Default NVIDIA-Linux-x86_64-384.130.run): " runFile # Ask the user to enter a run file
+    if [ "$runFile" = '' ]; then
+        runFile="NVIDIA-Linux-x86_64-384.130.run"
+    fi
     if [ ! -f $runFile ]; then
-    	echo "Run file not found!"
-    	fileFound=false
+        echo "Run file not found!"
+        fileFound=false
     else
-    	fileFound=true
-	fi
+        fileFound=true
+    fi
 done 
+
+start_time=`date +%s`
 
 NVIDIA_DRIVER=$runFile  # path to nvidia driver
 
+echo "Nvidia drvier to be installed: $NVIDIA_DRIVER"
 cp ${NVIDIA_DRIVER} NVIDIA-DRIVER.run
 
 # Get this script's path
@@ -39,3 +42,5 @@ docker build\
   --build-arg workspace=$DEV_PATH\
   --build-arg shell=$SHELL\
   -t $1 .
+
+echo Execution time is $(expr `date +%s` - $start_time) s
