@@ -14,12 +14,14 @@ set -e
 
 xhost + # Allow any connections to X server
 # Run the container with shared X11
-docker run\
-  --net=host\
-  -e SHELL\
-  -e DISPLAY\
-  -e DOCKER=1\
-  -v "$HOME/indigo_work_space:$HOME/Development:rw"\
-  -v "/tmp/.X11-unix:/tmp/.X11-unix:rw"\
-  --privileged -v /dev/bus/usb:/dev/bus/usb\
+docker run \
+  --privileged \
+  --net=host \
+  -e SHELL \
+  -e DISPLAY \
+  -e DOCKER=1 \
+  -v "$HOME/indigo_work_space:$HOME/Development:rw" \
+  -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+  -v /dev/bus/usb:/dev/bus/usb \
+  -v /dev/input:/dev/input \
   -it $1 $SHELL
