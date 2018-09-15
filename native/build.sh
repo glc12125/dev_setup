@@ -23,6 +23,12 @@ done
 
 start_time=`date +%s`
 
+echo -e "Downloading ubuntu bare bone image"
+if [ ! -f ubuntu-xenial-core-cloudimg-amd64-root.tar.gz ]; then
+  wget https://partner-images.canonical.com/core/xenial/current/ubuntu-xenial-core-cloudimg-amd64-root.tar.gz
+fi
+echo "Done!"
+
 NVIDIA_DRIVER=$runFile  # path to nvidia driver
 
 echo "Nvidia drvier to be installed: $NVIDIA_DRIVER"

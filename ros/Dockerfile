@@ -26,7 +26,7 @@ RUN sudo apt-get -y update
 RUN sudo apt-get install -y zsh screen tree sudo ssh vim vim-gtk synaptic dialog apt-utils
 
 # Latest X11 / mesa GL
-RUN sudo apt-get install -y          \
+RUN sudo apt-get install -y     \
   xserver-xorg-dev-lts-wily     \
   libegl1-mesa-dev-lts-wily     \
   libgl1-mesa-dev-lts-wily      \
@@ -43,7 +43,7 @@ RUN sudo apt-get install -y          \
 RUN sudo apt-get install -y ros-indigo-desktop-full
 
 # Dependencies required to build rviz
-RUN sudo apt-get install -y                                           \
+RUN sudo apt-get install -y                                      \
   qt4-dev-tools                                                  \
   libqt5core5a libqt5dbus5 libqt5gui5 libwayland-client0         \
   libwayland-server0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
