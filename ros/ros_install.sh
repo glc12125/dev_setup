@@ -30,6 +30,10 @@ print_usage(){
     echo -e "There are no args supported, only Ubuntu 16.04 is supported."
 }
 
+print_green(){
+    echo -e "\e[32m$1\e[39m"
+}
+
 
 #####################################################################################################
 # Make sure the correct versions of OS is supported
@@ -117,13 +121,13 @@ echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Cloning catkin_simple ..."
 echo "$passwd" | sudo -S git clone https://github.com/catkin/catkin_simple.git
-echo "Done !"
+print_green "Done !"
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Cloning gflags_catkin ..."
 echo "$passwd" | sudo -S git clone https://github.com/ethz-asl/gflags_catkin.git
-echo "Done !"
+print_green "Done !"
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
@@ -142,7 +146,7 @@ echo "--------------------------------------------------------------------------
 echo "Cloning glog_catkin ..."
 echo "$passwd" | sudo -S git clone https://github.com/ethz-asl/glog_catkin.git
 echo "$passwd" | sudo -S cp glog_catkin/fix-unused-typedef-warning.patch .
-echo "Done !"
+print_green "Done !"
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
@@ -160,25 +164,25 @@ echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Cloning mav_comm ..."
 echo "$passwd" | sudo -S git clone https://github.com/PX4/mav_comm.git
-echo "Done !"
+print_green "Done !"
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Cloning ROS_quadrotor_simulator ..."
 echo "$passwd" | sudo -S git clone https://github.com/wilselby/ROS_quadrotor_simulator
-echo "Done !"
+print_green "Done !"
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Cloning RotorS ..."
 echo "$passwd" | sudo -S git clone https://github.com/wilselby/rotors_simulator
-echo "Done !"
+print_green "Done !"
 echo "Installing RotorS"
 
 cd $ROS_WORKSPACE
 pwd
 echo "$passwd" | sudo -S rosdep install --from-paths src --ignore-src --rosdistro indigo -y
-echo "Done !"
+print_green "Done !"
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
@@ -187,7 +191,7 @@ cd $ROS_WORKSPACE
 pwd
 source devel/setup.bash
 catkin_make
-echo "Done !"
+print_green "Done !"
 
 # This is necessary to make sure all changes can be picked up
 source devel/setup.bash
@@ -199,7 +203,7 @@ echo "Install the integrated Ubuntu Xbox driver ..."
 echo "$passwd" | sudo -S apt-add-repository ppa:rael-gc/ubuntu-xboxdrv
 echo "$passwd" | sudo -S apt-get update
 echo "$passwd" | sudo -S apt-get install ubuntu-xboxdrv
-echo "Done !"
+print_green "Done !"
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
@@ -208,7 +212,7 @@ echo "$passwd" | sudo -S apt-get install jstest-gtk
 
 echo -e "\n\n"
 echo "----------------------------------------------------------------------------"
-echo "Installation completes.\n"
-echo "Please run source /home/developer/Development/ros/devel/setup.sh before \n"
-echo "runing any ros packages\n"
+print_green "Installation completes"
+echo -e "Please run source /home/developer/Development/ros/devel/setup.sh"
+echo " before runing any ros packages"
 echo "----------------------------------------------------------------------------"
