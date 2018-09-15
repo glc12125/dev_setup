@@ -34,7 +34,10 @@ RUN sudo apt-get install -y          \
   mesa-common-dev-lts-wily      \
   libgles2-mesa-lts-wily        \
   libwayland-egl1-mesa-lts-wily \
-  libopenvg1-mesa
+  libopenvg1-mesa               \
+  module-init-tools             \
+  mesa-utils                    \
+  binutils
 
 # The ROS-desktop
 RUN sudo apt-get install -y ros-indigo-desktop-full
@@ -63,6 +66,11 @@ RUN sudo apt-get -y install python-rosinstall          \
 # Additional development tools
 RUN sudo apt-get install -y x11-apps python-pip build-essential
 RUN sudo pip install catkin_tools
+
+# Install Nvidia driver, the same version as the host machine
+ADD NVIDIA-DRIVER.run /tmp/NVIDIA-DRIVER.run
+RUN sudo sh /tmp/NVIDIA-DRIVER.run -a -N --ui=none --no-kernel-module
+RUN sudo rm /tmp/NVIDIA-DRIVER.run
 
 # Clean up
 RUN sudo apt-get -y autoremove

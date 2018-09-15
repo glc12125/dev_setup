@@ -6,6 +6,10 @@ if [ "$#" -ne 1 ]; then
   return 1
 fi
 
+NVIDIA_DRIVER=NVIDIA-Linux-x86_64-384.130.run  # path to nvidia driver
+
+cp ${NVIDIA_DRIVER} NVIDIA-DRIVER.run
+
 # Get this script's path
 pushd `dirname $0` > /dev/null
 DEV_PATH=/home/developer/Development

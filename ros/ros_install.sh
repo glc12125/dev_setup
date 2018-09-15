@@ -193,3 +193,10 @@ echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Install the jstest-gtk package ..."
 echo "$passwd" | sudo -S apt-get install jstest-gtk
+
+echo -e "\n\n"
+echo "----------------------------------------------------------------------------"
+echo "Installation completes.\n"
+echo "Please run source /home/developer/Development/ros/devel/setup.sh before \n"
+echo "runing any ros packages\n"
+echo "----------------------------------------------------------------------------"
