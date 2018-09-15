@@ -6,7 +6,6 @@ if [ "$#" -ne 1 ]; then
   return 1
 fi
 
-
 fileFound=false
 while [[ "$fileFound" = false ]]
 do
@@ -29,10 +28,7 @@ NVIDIA_DRIVER=$runFile  # path to nvidia driver
 echo "Nvidia drvier to be installed: $NVIDIA_DRIVER"
 cp ${NVIDIA_DRIVER} NVIDIA-DRIVER.run
 
-# Get this script's path
-pushd `dirname $0` > /dev/null
 DEV_PATH=/home/developer/Development
-popd > /dev/null
 
 # Build the docker image
 docker build\
