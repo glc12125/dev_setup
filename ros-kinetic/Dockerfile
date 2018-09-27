@@ -72,7 +72,7 @@ ENV HOME /home/developer
 ENV QT_X11_NO_MITSHM=1
 
 # run the setup script
-RUN sudo mkdir -p ${workspace} && cd ${workspace}
+RUN sudo mkdir -p ${workspace} && cd ${workspace} && pwd
 
 RUN sudo git clone https://github.com/glc12125/dev_setup.git
 #RUN cd dev_setup && sudo git checkout origin/ros-kinetic
