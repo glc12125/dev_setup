@@ -75,7 +75,8 @@ ENV QT_X11_NO_MITSHM=1
 RUN sudo mkdir -p ${workspace} && cd ${workspace}
 
 RUN sudo git clone https://github.com/glc12125/dev_setup.git
-RUN cd dev_setup/ros-kinetic && bash ros_install.sh
+RUN cd dev_setup && sudo git checkout origin/ros-kinetic
+RUN cd ros-kinetic && bash ros_install.sh
 
 # Switch to the workspace
 WORKDIR ${workspace}
