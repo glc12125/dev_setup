@@ -127,6 +127,8 @@ if [ ! -f gazebo.sh ]; then
     echo "$passwd" | sudo -S wget https://bitbucket.org/osrf/release-tools/raw/default/one-line-installations/gazebo.sh
 fi
 echo "$passwd" | sudo -S bash gazebo.sh
+echo "Installing gazebo ros packages for kinetic"
+echo "$passwd" | sudo -S apt-get install ros-kinetic-gazebo-ros-pkgs ros-kinetic-gazebo-ros-control
 print_green "Done !"
 
 echo -e "\n"
