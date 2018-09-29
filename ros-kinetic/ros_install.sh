@@ -122,7 +122,11 @@ echo "$passwd" | sudo -S apt-get remove ros-kinetic-gazebo*
 echo "$passwd" | sudo -S apt-get remove libgazebo*
 echo "$passwd" | sudo -S apt-get remove gazebo*
 echo "Installing gazebo9 ..."
-echo "$passwd" | sudo -S curl -sSL http://get.gazebosim.org | sh
+if [ ! -f gazebo.sh ]; then
+    echo "gazebo9 install script not found!"
+    echo "$passwd" | sudo -S wget https://bitbucket.org/osrf/release-tools/raw/default/one-line-installations/gazebo.sh
+fi
+echo "$passwd" | sudo -S bash gazebo.sh
 print_green "Done !"
 
 echo -e "\n"
