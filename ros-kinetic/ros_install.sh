@@ -117,6 +117,10 @@ pwd
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
+echo "Uninstalling existing gazebo"
+echo "$passwd" | sudo -S apt-get remove ros-kinetic-gazebo*
+echo "$passwd" | sudo -S apt-get remove libgazebo*
+echo "$passwd" | sudo -S apt-get remove gazebo*
 echo "Installing gazebo9 ..."
 echo "$passwd" | sudo -S curl -sSL http://get.gazebosim.org | sh
 print_green "Done !"
