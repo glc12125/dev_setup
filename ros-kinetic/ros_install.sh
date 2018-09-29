@@ -128,7 +128,7 @@ if [ ! -f gazebo.sh ]; then
 fi
 echo "$passwd" | sudo -S bash gazebo.sh
 echo "Installing gazebo ros packages for kinetic"
-echo "$passwd" | sudo -S apt-get install ros-kinetic-gazebo-ros-pkgs ros-kinetic-gazebo-ros-control
+echo "$passwd" | sudo -S apt-get install libgazebo9-dev libsdformat6-dev libgazebo9 gazebo9-plugin-base ros-kinetic-gazebo9-ros-pkgs
 print_green "Done !"
 
 echo -e "\n"
