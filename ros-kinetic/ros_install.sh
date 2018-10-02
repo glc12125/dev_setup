@@ -190,7 +190,7 @@ echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Cloning RotorS ..."
 echo "$passwd" | sudo -S git clone https://github.com/ethz-asl/rotors_simulator.git && cd rotors_simulator
-echo "$passwd" | sudo -S git checkout 577bb1beaa162063c1344ade4118aaec9e1e1c9c && cd ..
+echo "$passwd" | sudo -S git checkout 5e5e00bfab47e7af6bb4d988c631775be53fd10c && cd ..
 print_green "Done !"
 echo "Installing RotorS"
 
