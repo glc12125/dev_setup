@@ -77,6 +77,7 @@ RUN sudo mkdir -p ${workspace} && cd ${workspace} && pwd
 RUN sudo git clone https://github.com/glc12125/dev_setup.git
 #RUN cd dev_setup && sudo git checkout origin/ros-kinetic
 #RUN cd ros-kinetic && bash ros_install.sh
+# sudo git clone https://github.com/glc12125/dev_setup.git && cd dev_setup && sudo git checkout origin/ros-kinetic && cd ros-kinetic && bash ros_install.sh
 
 # Switch to the workspace
 WORKDIR ${workspace}
