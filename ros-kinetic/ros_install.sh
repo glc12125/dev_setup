@@ -189,7 +189,7 @@ print_green "Done !"
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Cloning RotorS ..."
-echo "$passwd" | sudo -S git clone https://github.com/wilselby/rotors_simulator
+echo "$passwd" | sudo -S git clone git@github.com:ethz-asl/rotors_simulator.git
 print_green "Done !"
 echo "Installing RotorS"
 
