@@ -7,7 +7,7 @@
 SYSTEM_PACKAGE_MANAGER=""
 SYSTEM_PACKAGE_TYPE=""
 SYSTEM_PACKAGE_SET=""
-ROS_PACKAGE_SET="ros-kinetic-desktop-full"
+ROS_PACKAGE_SET="ros-kinetic-simulators ros-kinetic-desktop-full"
 DEV_INSTALL_DIR_DEFAULT="/opt/tmp"
 #####################################################################################################
 # Helper functions
