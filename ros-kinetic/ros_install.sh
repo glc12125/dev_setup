@@ -21,7 +21,7 @@ guess_system_package_manager(){
     fi
 
     if [ $SYSTEM_PACKAGE_TYPE == "deb" ]; then
-        SYSTEM_PACKAGE_SET="python-rosinstall python-rosinstall-generator python-wstool build-essential checkinstall cmake pkg-config yasm wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev python-dev python-numpy libusb-1.0-0-dev doxygen libboost-all-dev autoconf automake libtool curl make g++ unzip software-properties-common"
+        SYSTEM_PACKAGE_SET="python-rosinstall python-rosinstall-generator python-wstool python-catkin-tools protobuf-compiler libgoogle-glog-dev build-essential checkinstall cmake pkg-config yasm wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev python-dev python-numpy libusb-1.0-0-dev doxygen libboost-all-dev autoconf automake libtool curl make g++ unzip software-properties-common"
     fi
 }
 
@@ -97,6 +97,8 @@ echo "$passwd" | sudo -S apt-get -y install python-rosinstall          \
                                             ros-kinetic-joy             \
                                             ros-kinetic-geodesy         \
                                             ros-kinetic-octomap-ros     \
+                                            ros-kinetic-mavlink         \
+                                            ros-kinetic-control-toolbox \
                                             unzip                 
 
 # Set up catkin workspace, note workspace is recommended to match that in build.sh for consistency
@@ -204,6 +206,7 @@ echo "--------------------------------------------------------------------------
 echo "Compiling ROS workspace via catkin_make ..."
 cd $ROS_WORKSPACE
 pwd
+echo "$passwd" | sudo -S chown 1000:1000 -R $ROS_WORKSPACE
 source devel/setup.bash
 catkin_make
 print_green "Done !"
