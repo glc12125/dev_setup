@@ -185,7 +185,8 @@ print_green "Done !"
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Cloning ROS_quadrotor_simulator ..."
-echo "$passwd" | sudo -S git clone https://github.com/glc12125/ROS_quadrotor_simulator.git
+echo "$passwd" | sudo -S git clone https://github.com/glc12125/ROS_quadrotor_simulator.git && cd ROS_quadrotor_simulator
+echo "$passwd" | sudo -S cmake action_controller && cd ..
 print_green "Done !"
 
 echo -e "\n"
