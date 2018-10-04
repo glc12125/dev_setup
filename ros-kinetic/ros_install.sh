@@ -209,6 +209,7 @@ echo "Compiling ROS workspace via catkin_make ..."
 cd $ROS_WORKSPACE
 pwd
 echo "$passwd" | sudo -S chown 1000:1000 -R $ROS_WORKSPACE
+echo "ownership changed for $ROS_WORKSPACE"
 source devel/setup.bash
 catkin_make
 print_green "Done !"
