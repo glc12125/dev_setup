@@ -96,7 +96,9 @@ echo "$passwd" | sudo -S apt-get -y install python-rosinstall          \
                                             ros-indigo-octomap-msgs    \
                                             ros-indigo-joy             \
                                             ros-indigo-geodesy         \
+                                            ros-indigo-ros-control     \
                                             ros-indigo-octomap-ros     \
+                                            ros-indigo-ecl-threads     \
                                             libsdformat1               \
                                             gazebo2                    \
                                             unzip                 
