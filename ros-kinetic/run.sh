@@ -14,7 +14,7 @@ set -e
 
 local_dev=$HOME/Development/rosindigo_dev
 if [ ! -d $local_dev ]; then
-	mkdir $local_dev
+	mkdir -p $local_dev
 fi
 
 docker volume create --driver local --opt type=none --opt device=$local_dev --opt o=bind rosindigo_dev
