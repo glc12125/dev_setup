@@ -129,7 +129,8 @@ echo "$passwd" | sudo -S mkdir -p $DEV_INSTALL_DIR_DEFAULT/download
 cd $DEV_INSTALL_DIR_DEFAULT/download
 echo "$passwd" | sudo -S wget https://github.com/opencv/opencv/archive/3.2.0.zip -O opencv3.2.zip
 echo "$passwd" | sudo -S wget https://github.com/opencv/opencv_contrib/archive/3.2.0.zip -O opencv_contrib-3.2.0.zip
-echo "$passwd" | sudo -S unzip opencv3.2.zip && unzip opencv_contrib-3.2.0.zip && cd opencv-3.2.0
+echo "$passwd" | sudo -S unzip opencv3.2.zip
+echo "$passwd" | sudo -S unzip opencv_contrib-3.2.0.zip && cd opencv-3.2.0
 echo "$passwd" | sudo -S mkdir build && cd build
 echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=$LIB_INSTALL_PATH -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_VTK=ON -D WITH_CUDA=OFF -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.2.0/modules ..
 echo "$passwd" | sudo -S make -j$(nproc)
@@ -156,31 +157,35 @@ echo "$passwd" | sudo -S make install
 
 # get development repo
 DEV_WORKSPACE=/home/$CURRENT_USER/Development
+echo "$passwd" | sudo -S mkdir -p $DEV_WORKSPACE
 cd $DEV_WORKSPACE
-echo "$passwd" | sudo -S git clone https://github.com/glc12125/mVSLAM.git
-#catkin_init_workspace
-DEV_MAIN_PROJECT_DIR="${DEV_WORKSPACE}/mVSLAM"
-cd $DEV_MAIN_PROJECT_DIR
-echo "$passwd" | sudo -S git checkout fast-plan
-echo "$passwd" | sudo -S ./updateGitSubmodule.sh
-sudo chown 1000:1000 -R $DEV_WORKSPACE
-ROS_WORKSPACE="${DEV_WORKSPACE}/mVSLAM/apps/ros_catkin_workspace"
-sh -c "echo 'source $ROS_WORKSPACE/devel/setup.bash' >> ~/.bashrc"
-source ~/.bashrc
+
+
+# The following steps have to be mannual for confidentiality and security reasons
+#
+#echo "$passwd" | sudo -S git clone https://github.com/glc12125/mVSLAM.git
+
+#DEV_MAIN_PROJECT_DIR="${DEV_WORKSPACE}/mVSLAM"
+#cd $DEV_MAIN_PROJECT_DIR
+#echo "$passwd" | sudo -S git checkout fast-plan
+#echo "$passwd" | sudo -S ./updateGitSubmodule.sh
+#sudo chown 1000:1000 -R $DEV_WORKSPACE
+#ROS_WORKSPACE="${DEV_WORKSPACE}/mVSLAM/apps/ros_catkin_workspace"
 
 
 
-echo -e "\n"
-echo "----------------------------------------------------------------------------"
-echo "Compiling ROS workspace via catkin_make ..."
-cd $ROS_WORKSPACE
-pwd
-cd $DEV_MAIN_PROJECT_DIR
-echo "$passwd" | sudo -S ./build.sh
-print_green "Done !"
+#echo -e "\n"
+#echo "----------------------------------------------------------------------------"
+#echo "Compiling ROS workspace via script ..."
+#cd $ROS_WORKSPACE
+#pwd
+#cd $DEV_MAIN_PROJECT_DIR
+#echo "$passwd" | sudo -S ./build.sh
+#print_green "Done !"
 
 # This is necessary to make sure all changes can be picked up
-source devel/setup.bash
+#sh -c "echo 'source $ROS_WORKSPACE/devel/setup.bash' >> ~/.bashrc"
+#source ~/.bashrc
 
 
 echo -e "\n"
@@ -202,3 +207,6 @@ print_green "Installation completes"
 echo -e "Please run source /home/developer/Development/ros/devel/setup.sh"
 echo " before runing any ros packages"
 echo "----------------------------------------------------------------------------"
+
+
+echo "$passwd" | sudo -S rm -r $DEV_INSTALL_DIR_DEFAULT/download

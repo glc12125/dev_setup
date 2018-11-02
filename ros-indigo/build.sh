@@ -41,6 +41,7 @@ docker build\
   --build-arg home=$HOME\
   --build-arg workspace=$DEV_PATH\
   --build-arg shell=$SHELL\
+  --no-cache\
   -t $1 .
 
 echo Execution time is $(expr `date +%s` - $start_time) s
