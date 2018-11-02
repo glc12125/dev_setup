@@ -75,7 +75,7 @@ ENV QT_X11_NO_MITSHM=1
 RUN sudo mkdir -p ${workspace} && cd ${workspace}
 
 RUN sudo git clone https://github.com/glc12125/dev_setup.git
-RUN cd dev_setup/ros && bash ros_install.sh
+RUN cd dev_setup/ros && sudo git checkout dev_refactor && bash ros_install.sh
 
 # Switch to the workspace
 WORKDIR ${workspace}

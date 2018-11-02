@@ -21,7 +21,7 @@ guess_system_package_manager(){
     fi
 
     if [ $SYSTEM_PACKAGE_TYPE == "deb" ]; then
-        SYSTEM_PACKAGE_SET="python-rosinstall python-rosinstall-generator python-wstool build-essential checkinstall pkg-config yasm wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev python-dev python-numpy libusb-1.0-0-dev doxygen libboost-all-dev autoconf automake libtool curl make g++ unzip libhdf5-dev libwebp-dev software-properties-common"
+        SYSTEM_PACKAGE_SET="python-rosinstall python-rosinstall-generator python-wstool build-essential checkinstall cmake pkg-config yasm wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev python-dev python-numpy libusb-1.0-0-dev doxygen libboost-all-dev autoconf automake libtool curl make g++ unzip software-properties-common"
     fi
 }
 
@@ -83,14 +83,6 @@ echo "$passwd" | sudo -S echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 
 
-# Upgrade cmake to 3.x
-echo "$passwd" | sudo -S apt-get install software-properties-common
-echo "$passwd" | sudo -S add-apt-repository ppa:george-edison55/cmake-3.x
-echo "$passwd" | sudo -S apt-get update
-echo "$passwd" | sudo -S apt-get install cmake
-
-
-
 # Install mavros but from shadow repo to get latest version earlier
 echo "$passwd" | sudo -S sh -c 'echo "deb http://packages.ros.org/ros-shadow-fixed/ubuntu/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-shadow.list'
 echo "$passwd" | sudo -S apt-get update
@@ -111,72 +103,96 @@ echo "$passwd" | sudo -S apt-get -y install python-rosinstall          \
                                             gazebo2                    \
                                             unzip                 
 
-
-
-#####################################################################################################
-# Start the installation from source code
-#####################################################################################################
-DEV_INSTALL_DIR_DEFAULT="/opt/tmp"
-LIB_INSTALL_PATH="/usr/local"
-echo "$passwd" | sudo -S mkdir $LIB_INSTALL_PATH
-
-# Install opencv 3.2
-echo -e "\n"
-echo "----------------------------------------------------------------------------"
-echo "Installing opencv 3.2.0 and opencv_contrib 3.2.0 ..."
-echo "----------------------------------------------------------------------------"
-echo "$passwd" | sudo -S mkdir -p $DEV_INSTALL_DIR_DEFAULT/download
-cd $DEV_INSTALL_DIR_DEFAULT/download
-echo "$passwd" | sudo -S wget https://github.com/opencv/opencv/archive/3.2.0.zip -O opencv3.2.zip
-echo "$passwd" | sudo -S wget https://github.com/opencv/opencv_contrib/archive/3.2.0.zip -O opencv_contrib-3.2.0.zip
-echo "$passwd" | sudo -S unzip opencv3.2.zip && unzip opencv_contrib-3.2.0.zip && cd opencv-3.2.0
-echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=$LIB_INSTALL_PATH -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_VTK=ON -D WITH_CUDA=OFF -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.2.0/modules ..
-echo "$passwd" | sudo -S make -j$(nproc)
-echo "$passwd" | sudo -S make install
-echo "$passwd" | sudo -S /bin/bash -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
-echo "$passwd" | sudo -S ldconfig
-echo "$passwd" | sudo -S execstack -c /usr/local/lib/*opencv*.so*
-
-
-# Install pcl
-echo -e "\n"
-echo "----------------------------------------------------------------------------"
-echo "Installing pcl 1.8 ..."
-echo "----------------------------------------------------------------------------"
-cd $DEV_INSTALL_DIR_DEFAULT/download
-echo "$passwd" | sudo -S wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.8.0.tar.gz
-echo "$passwd" | sudo -S tar -xf pcl-1.8.0.tar.gz && cd pcl-pcl-1.8.0
-echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=$LIB_INSTALL_PATH ..
-echo "$passwd" | sudo -S make -j$(nproc)
-echo "$passwd" | sudo -S make install
-
-
-
-# get development repo
-DEV_WORKSPACE=/home/$CURRENT_USER/Development
-cd $DEV_WORKSPACE
-echo "$passwd" | sudo -S git clone https://github.com/glc12125/mVSLAM.git
-#catkin_init_workspace
-DEV_MAIN_PROJECT_DIR="${DEV_WORKSPACE}/mVSLAM"
-cd $DEV_MAIN_PROJECT_DIR
-echo "$passwd" | sudo -S git checkout fast-plan
-echo "$passwd" | sudo -S ./updateGitSubmodule.sh
-sudo chown 1000:1000 -R $DEV_WORKSPACE
-ROS_WORKSPACE="${DEV_WORKSPACE}/mVSLAM/apps/ros_catkin_workspace"
+# Set up catkin workspace, note workspace is recommended to match that in build.sh for consistency
+workspace=/home/$CURRENT_USER/Development
+ROS_WORKSPACE="${workspace}/ros"
+sudo mkdir -p ROS_WORKSPACE
+sudo mkdir -p $ROS_WORKSPACE/src
+sudo chown 1000:1000 -R $ROS_WORKSPACE
+cd $ROS_WORKSPACE/src
+catkin_init_workspace
+cd $ROS_WORKSPACE
+catkin_make
 sh -c "echo 'source $ROS_WORKSPACE/devel/setup.bash' >> ~/.bashrc"
 source ~/.bashrc
+ROS_WORKSPACE="${workspace}/ros"
+cd $ROS_WORKSPACE/src
+pwd
 
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Cloning catkin_simple ..."
+echo "$passwd" | sudo -S git clone https://github.com/catkin/catkin_simple.git
+print_green "Done !"
 
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Cloning gflags_catkin ..."
+echo "$passwd" | sudo -S git clone https://github.com/ethz-asl/gflags_catkin.git
+print_green "Done !"
+
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Compiling gflags_catkin first via catkin_make ..."
+ROS_WORKSPACE="${workspace}/ros"
+cd $ROS_WORKSPACE
+pwd
+source devel/setup.bash
+catkin_make
+
+ROS_WORKSPACE="${workspace}/ros"
+cd $ROS_WORKSPACE/src
+pwd
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Cloning glog_catkin ..."
+echo "$passwd" | sudo -S git clone https://github.com/ethz-asl/glog_catkin.git
+echo "$passwd" | sudo -S cp glog_catkin/fix-unused-typedef-warning.patch .
+print_green "Done !"
+
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Compiling glog_catkin first via catkin_make ..."
+cd $ROS_WORKSPACE
+pwd
+source devel/setup.bash
+catkin_make
+
+ROS_WORKSPACE="${workspace}/ros"
+cd $ROS_WORKSPACE/src
+pwd
+
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Cloning mav_comm ..."
+echo "$passwd" | sudo -S git clone https://github.com/PX4/mav_comm.git
+print_green "Done !"
+
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Cloning ROS_quadrotor_simulator ..."
+echo "$passwd" | sudo -S git clone https://github.com/wilselby/ROS_quadrotor_simulator
+print_green "Done !"
+
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Cloning RotorS ..."
+echo "$passwd" | sudo -S git clone https://github.com/wilselby/rotors_simulator
+print_green "Done !"
+echo "Installing RotorS"
+
+cd $ROS_WORKSPACE
+pwd
+echo "$passwd" | sudo -S rosdep install --from-paths src --ignore-src --rosdistro indigo -y
+print_green "Done !"
 
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Compiling ROS workspace via catkin_make ..."
 cd $ROS_WORKSPACE
 pwd
-cd $DEV_MAIN_PROJECT_DIR
-echo "$passwd" | sudo -S ./build.sh
+source devel/setup.bash
+catkin_make
 print_green "Done !"
 
 # This is necessary to make sure all changes can be picked up
