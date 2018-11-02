@@ -132,7 +132,7 @@ echo "$passwd" | sudo -S wget https://github.com/opencv/opencv_contrib/archive/3
 echo "$passwd" | sudo -S unzip opencv3.2.zip
 echo "$passwd" | sudo -S unzip opencv_contrib-3.2.0.zip && cd opencv-3.2.0
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=$LIB_INSTALL_PATH -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_VTK=ON -D WITH_CUDA=OFF -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.2.0/modules ..
+echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_SHARED_LIBS=ON -D CMAKE_INSTALL_PREFIX=$LIB_INSTALL_PATH -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_VTK=ON -D WITH_CUDA=OFF -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.2.0/modules ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 echo "$passwd" | sudo -S /bin/bash -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
@@ -158,6 +158,7 @@ echo "$passwd" | sudo -S make install
 # get development repo
 DEV_WORKSPACE=/home/$CURRENT_USER/Development
 echo "$passwd" | sudo -S mkdir -p $DEV_WORKSPACE
+sudo chown 1000:1000 -R $DEV_WORKSPACE
 cd $DEV_WORKSPACE
 
 
@@ -171,6 +172,8 @@ cd $DEV_WORKSPACE
 #echo "$passwd" | sudo -S ./updateGitSubmodule.sh
 #sudo chown 1000:1000 -R $DEV_WORKSPACE
 #ROS_WORKSPACE="${DEV_WORKSPACE}/mVSLAM/apps/ros_catkin_workspace"
+#cd $ROS_WORKSPACE
+#echo "$passwd" | sudo -S catkin config --extend /opt/ros/indigo
 
 
 
