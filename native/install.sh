@@ -47,7 +47,7 @@ guess_system_package_manager(){
     if [ $SYSTEM_PACKAGE_TYPE == "rpm" ]; then
         SYSTEM_PACKAGE_SET="gvim ctags cscope git wget pcre-devel libyaml-devel python-pip python-devel clang-devel clang-libs"
     elif [ $SYSTEM_PACKAGE_TYPE == "deb" ]; then
-        SYSTEM_PACKAGE_SET="build-essential checkinstall cmake pkg-config yasm libtiff5-dev libjpeg-dev libjasper-dev wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils libeigen3-dev libglew-dev libusb-1.0-0-dev libpng12-dev libtiff5-dev libopenexr-dev doxygen libboost-all-dev libflann1.8 libflann-dev prelink execstack libglew-dev libglm-dev libsoil-dev freeglut3-dev libxmu-dev libxi-dev libpng++-dev autoconf automake libtool curl make g++ unzip libwebp-dev"
+        SYSTEM_PACKAGE_SET="build-essential checkinstall cmake pkg-config yasm libtiff5-dev libjpeg-dev wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils libeigen3-dev libglew-dev libusb-1.0-0-dev libtiff5-dev libopenexr-dev doxygen libboost-all-dev libflann-dev prelink execstack libglew-dev libglm-dev libsoil-dev freeglut3-dev libxmu-dev libxi-dev libpng++-dev autoconf automake libtool curl make g++ unzip libwebp-dev"
     elif [ $SYSTEM_PACKAGE_TYPE == "archpkg" || $SYSTEM_PACKAGE_TYPE == "ebuild" ]; then
         SYSTEM_PACKAGE_SET="gvim ctags cscope git wget pcre libyaml python-pip python clang"
     fi
@@ -101,7 +101,7 @@ echo "$passwd" | sudo -S $SYSTEM_PACKAGE_MANAGER_INSTALL $SYSTEM_PACKAGE_SET
 
 # Build the destination directory and copy all of the relevant files
 echo "$passwd" | sudo -S mkdir -p $DEV_INSTALL_DIR_DEFAULT
-
+cd $DEV_INSTALL_DIR_DEFAULT
 
 #####################################################################################################
 # Start the installation
@@ -110,24 +110,34 @@ echo "$passwd" | sudo -S mkdir -p $DEV_INSTALL_DIR_DEFAULT
 echo "$passwd" | sudo -S mkdir download && cd download
 echo "$passwd" | sudo -S mkdir ~/libs
 
-# Install opencv 3.2
+# Install opencv 3.4.5
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
-echo "Installing opencv 3.2.0 and opencv_contrib 3.2.0 ..."
+echo "Installing opencv 3.4.5 and opencv_contrib 3.4.5 ..."
 echo "----------------------------------------------------------------------------"
-echo "$passwd" | sudo -S mkdir -p $DEV_INSTALL_DIR_DEFAULT/download
-cd $DEV_INSTALL_DIR_DEFAULT/download
-echo "$passwd" | sudo -S wget https://github.com/opencv/opencv/archive/3.2.0.zip -O opencv3.2.zip
-echo "$passwd" | sudo -S wget https://github.com/opencv/opencv_contrib/archive/3.2.0.zip -O opencv_contrib-3.2.0.zip
-echo "$passwd" | sudo -S unzip opencv3.2.zip && unzip opencv_contrib-3.2.0.zip && cd opencv-3.2.0
+echo "$passwd" | sudo -S wget https://github.com/opencv/opencv/archive/3.4.5.zip -O opencv3.4.5.zip
+echo "$passwd" | sudo -S wget https://github.com/opencv/opencv_contrib/archive/3.4.5.zip -O opencv_contrib-3.4.5.zip
+echo "$passwd" | sudo -S unzip opencv3.4.5.zip
+echo "$passwd" | sudo -S unzip opencv_contrib-3.4.5.zip && cd opencv-3.4.5
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=~/libs -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_VTK=ON -D WITH_CUDA=OFF -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.2.0/modules ..
+echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=~/libs -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_VTK=ON -D WITH_CUDA=OFF -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.4.5/modules ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 echo "$passwd" | sudo -S /bin/bash -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
 echo "$passwd" | sudo -S ldconfig
 echo "$passwd" | sudo -S execstack -c /usr/local/lib/*opencv*.so*
-cd ../../
+cd $DEV_INSTALL_DIR_DEFAULT/download
+
+# Install boost 1.58 static libraries
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Installing boost 1.58 static libraries ..."
+echo "----------------------------------------------------------------------------"
+echo "$passwd" | sudo -S http://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.tar.bz2
+echo "$passwd" | sudo -S tar --bzip2 -xf boost_1_60_0.tar.bz2 && cd boost_1_60_0
+echo "$passwd" | sudo -S ./bootstrap.sh --prefix=~/libs
+echo "$passwd" | sudo -S ./b2 --prefix=~/libs link=static install
+cd $DEV_INSTALL_DIR_DEFAULT/download
 
 # Install GLFW
 echo -e "\n"
@@ -139,7 +149,7 @@ echo "$passwd" | sudo -S mkdir build && cd build
 echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
-cd ../../
+cd $DEV_INSTALL_DIR_DEFAULT/download
 
 # Install libuvc
 echo -e "\n"
@@ -151,103 +161,7 @@ echo "$passwd" | sudo -S mkdir build && cd build
 echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
-cd ../../
+cd $DEV_INSTALL_DIR_DEFAULT/download
 
-# Install Pangolin
-echo -e "\n"
-echo "----------------------------------------------------------------------------"
-echo "Installing Pangolin ..."
-echo "----------------------------------------------------------------------------"
-echo "$passwd" | sudo -S git clone https://github.com/stevenlovegrove/Pangolin.git && cd Pangolin
-#echo "$passwd" | sudo -S git checkout cad23ac468d202d371105676707ff5e217610008 # due to issue reported in https://github.com/stevenlovegrove/Pangolin/issues/268
-echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo sudo sh -c 'echo "" > ../test/log/CMakeLists.txt'
-echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
-echo "$passwd" | sudo -S make -j$(nproc)
-echo "$passwd" | sudo -S make install
-cd ../../
-
-# Install libuvc
-echo -e "\n"
-echo "----------------------------------------------------------------------------"
-echo "Installing OctoMap ..."
-echo "----------------------------------------------------------------------------"
-echo "$passwd" | sudo -S git clone git://github.com/OctoMap/octomap.git && cd octomap
-echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
-echo "$passwd" | sudo -S make -j$(nproc)
-echo "$passwd" | sudo -S make install
-cd ../../
-
-# Install VTK (For pcl visualization)
-echo -e "\n"
-echo "----------------------------------------------------------------------------"
-echo "Installing vtk (For pcl visualization) ..."
-echo "----------------------------------------------------------------------------"
-echo "$passwd" | sudo -S wget http://www.vtk.org/files/release/6.2/VTK-6.2.0.tar.gz
-echo "$passwd" | sudo -S tar -xf VTK-6.2.0.tar.gz && cd VTK-6.2.0
-echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
-echo "$passwd" | sudo -S make -j$(nproc)
-echo "$passwd" | sudo -S make install
-cd ../../
-
-# Install pcl
-echo -e "\n"
-echo "----------------------------------------------------------------------------"
-echo "Installing pcl 1.8 ..."
-echo "----------------------------------------------------------------------------"
-echo "$passwd" | sudo -S wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.8.0.tar.gz
-pwd
-echo "$passwd" | sudo -S tar -xf pcl-1.8.0.tar.gz && cd pcl-pcl-1.8.0
-echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
-echo "$passwd" | sudo -S make -j$(nproc)
-echo "$passwd" | sudo -S make install
-cd ../../
-
-# Install gflags
-echo -e "\n"
-echo "----------------------------------------------------------------------------"
-echo "Installing gflags 2.2.1 ..."
-echo "----------------------------------------------------------------------------"
-echo "$passwd" | sudo -S wget https://github.com/gflags/gflags/archive/v2.2.1.zip
-pwd
-echo "$passwd" | sudo -S unzip v2.2.1.zip && cd gflags-2.2.1/doc 
-echo "$passwd" | sudo -S wget https://github.com/gflags/gflags/blob/679df49798e2d9766975399baf063446e0957bba/index.html && cd ..
-echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs -DBUILD_SHARED_LIBS=ON ..
-echo "$passwd" | sudo -S make -j$(nproc)
-echo "$passwd" | sudo -S make install
-cd ../../
-
-# Install glog
-echo -e "\n"
-echo "----------------------------------------------------------------------------"
-echo "Installing glog 0.3.5 ..."
-echo "----------------------------------------------------------------------------"
-echo "$passwd" | sudo -S wget https://github.com/google/glog/archive/v0.3.5.zip
-pwd
-echo "$passwd" | sudo -S unzip v0.3.5.zip && cd glog-0.3.5
-echo "$passwd" | sudo -S export LDFLAGS='-L/usr/local/lib'
-echo "$passwd" | sudo -S ./configure --includedir=/usr/local/include/gflags --prefix=~/libs
-echo "$passwd" | sudo -S make -j$(nproc)
-echo "$passwd" | sudo -S make install
-cd ../
-
-# Install protobuf 3.5.1
-echo -e "\n"
-echo "----------------------------------------------------------------------------"
-echo "Installing protobuf 3.5.1 ..."
-echo "----------------------------------------------------------------------------"
-echo "$passwd" | sudo -S wget https://github.com/protocolbuffers/protobuf/releases/download/v3.5.1/protobuf-cpp-3.5.1.zip
-pwd
-echo "$passwd" | sudo -S unzip protobuf-cpp-3.5.1.zip && cd protobuf-3.5.1
-echo "$passwd" | sudo -S ./configure --prefix=~/libs
-echo "$passwd" | sudo -S make
-echo "$passwd" | sudo -S make check
-echo "$passwd" | sudo -S make install
-echo "$passwd" | sudo -S ldconfig
-
-cd ../../
+cd $DEV_INSTALL_DIR_DEFAULT
 echo "$passwd" | sudo -S rm -r download
