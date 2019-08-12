@@ -113,15 +113,15 @@ echo "$passwd" | sudo -S mkdir ~/libs
 # Install opencv 3.2
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
-echo "Installing opencv 3.2.0 and opencv_contrib 3.2.0 ..."
+echo "Installing opencv 3.4.5 and opencv_contrib 3.4.5 ..."
 echo "----------------------------------------------------------------------------"
 echo "$passwd" | sudo -S mkdir -p $DEV_INSTALL_DIR_DEFAULT/download
 cd $DEV_INSTALL_DIR_DEFAULT/download
-echo "$passwd" | sudo -S wget https://github.com/opencv/opencv/archive/3.2.0.zip -O opencv3.2.zip
-echo "$passwd" | sudo -S wget https://github.com/opencv/opencv_contrib/archive/3.2.0.zip -O opencv_contrib-3.2.0.zip
-echo "$passwd" | sudo -S unzip opencv3.2.zip && unzip opencv_contrib-3.2.0.zip && cd opencv-3.2.0
+echo "$passwd" | sudo -S wget https://github.com/opencv/opencv/archive/3.4.5.zip -O opencv3.4.5.zip
+echo "$passwd" | sudo -S wget https://github.com/opencv/opencv_contrib/archive/3.4.5.zip -O opencv_contrib-3.4.5.zip
+echo "$passwd" | sudo -S unzip opencv3.4.5.zip && unzip opencv_contrib-3.4.5.zip && cd opencv-3.4.5
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=~/libs -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_VTK=ON -D WITH_CUDA=OFF -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.2.0/modules ..
+echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_OPENCV_GPU=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=~/libs -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_CUDA=OFF -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.4.5/modules ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 echo "$passwd" | sudo -S /bin/bash -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
