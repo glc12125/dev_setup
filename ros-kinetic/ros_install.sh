@@ -21,7 +21,7 @@ guess_system_package_manager(){
     fi
 
     if [ $SYSTEM_PACKAGE_TYPE == "deb" ]; then
-        SYSTEM_PACKAGE_SET="python-rosinstall python-rosinstall-generator python-wstool build-essential checkinstall cmake pkg-config yasm wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev python-dev python-numpy libusb-1.0-0-dev doxygen libboost-all-dev autoconf automake libtool curl make g++ unzip software-properties-common"
+        SYSTEM_PACKAGE_SET="python-rosinstall python-rosinstall-generator python-wstool build-essential checkinstall cmake pkg-config yasm wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev python-dev python-numpy libusb-1.0-0-dev doxygen libboost-all-dev autoconf automake libtool curl make g++ unzip software-properties-common libsm6 libxext6 libxrender-dev"
     fi
 }
 

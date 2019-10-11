@@ -1,0 +1,1 @@
+docker run --runtime=nvidia -it -w /mnt/ -v $PWD:/mnt -e HOST_PERMS="$(id -u):$(id -g)" robok/tensorflow-gpu:1.0 bash

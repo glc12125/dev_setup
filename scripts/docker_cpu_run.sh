@@ -1,0 +1,1 @@
+docker run -it -w /mnt/ -v $PWD:/mnt -e HOST_PERMS="$(id -u):$(id -g)" robok/tensorflow:1.0 bash

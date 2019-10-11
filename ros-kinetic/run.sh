@@ -12,12 +12,12 @@ popd > /dev/null
 
 set -e
 
-local_dev=$HOME/Development/rosindigo_dev
+local_dev=$HOME/Development/roskinetic_dev
 if [ ! -d $local_dev ]; then
 	mkdir -p $local_dev
 fi
 
-docker volume create --driver local --opt type=none --opt device=$local_dev --opt o=bind rosindigo_dev
+docker volume create --driver local --opt type=none --opt device=$local_dev --opt o=bind roskinetic_dev
 
 xhost + # Allow any connections to X server
 # Run the container with shared X11
@@ -27,8 +27,9 @@ docker run \
   -e SHELL \
   -e DISPLAY \
   -e DOCKER=1 \
-  -v rosindigo_dev:"/home/developer/Development:rw" \
+  -v roskinetic_dev:"/home/developer/Development:rw" \
   -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+  -v /dev/video0:/dev/video0 \
   -v /dev/bus/usb:/dev/bus/usb \
   -v /dev/input:/dev/input \
   -it $1 $SHELL

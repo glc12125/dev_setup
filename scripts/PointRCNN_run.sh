@@ -1,0 +1,1 @@
+docker run --runtime=nvidia -it -w /PointRCNN/ -v /home/liangchuan/Development/PointRCNN:/PointRCNN -e HOST_PERMS="$(id -u):$(id -g)" tensorflow/tensorflow:1.10.1-devel-gpu-py3 bash
