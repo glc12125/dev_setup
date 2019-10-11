@@ -98,17 +98,19 @@ echo "$passwd" | sudo -S apt-get -y install ros-indigo-mavros \
                                     ros-indigo-mavros-extras
 
 # Get rosinstall and some additional dependencies for wilselby
-echo "$passwd" | sudo -S apt-get -y install python-rosinstall          \
-                                            ros-indigo-moveit          \
-                                            ros-indigo-move-base       \
-                                            ros-indigo-octomap-msgs    \
-                                            ros-indigo-joy             \
-                                            ros-indigo-geodesy         \
-                                            ros-indigo-ros-control     \
-                                            ros-indigo-octomap-ros     \
-                                            ros-indigo-ecl-threads     \
-                                            libsdformat1               \
-                                            gazebo2                    \
+echo "$passwd" | sudo -S apt-get -y install python-rosinstall                  \
+                                            ros-indigo-moveit                  \
+                                            ros-indigo-move-base               \
+                                            ros-indigo-octomap-msgs            \
+                                            ros-indigo-joy                     \
+                                            ros-indigo-geodesy                 \
+                                            ros-indigo-ros-control             \
+                                            ros-indigo-octomap-ros             \
+                                            ros-indigo-ecl-threads             \
+                                            ros-indigo-gazebo-ros-control      \
+                                            ros-indigo-velodyne-gazebo-plugins \
+                                            libsdformat1                       \
+                                            gazebo2                            \
                                             unzip                 
 
 
@@ -164,11 +166,11 @@ cd $DEV_WORKSPACE
 
 # The following steps have to be mannual for confidentiality and security reasons
 #
-#echo "$passwd" | sudo -S git clone https://github.com/glc12125/mVSLAM.git
+#echo "$passwd" | sudo -S git clone https://github.com/chaogao-cam/mVSLAM.git
 
 #DEV_MAIN_PROJECT_DIR="${DEV_WORKSPACE}/mVSLAM"
 #cd $DEV_MAIN_PROJECT_DIR
-#echo "$passwd" | sudo -S git checkout fast-plan
+#echo "$passwd" | sudo -S git checkout b29cca8b214b13aab69dca050bf2cbc1470174aa
 #echo "$passwd" | sudo -S ./updateGitSubmodule.sh
 #sudo chown 1000:1000 -R $DEV_WORKSPACE
 #ROS_WORKSPACE="${DEV_WORKSPACE}/mVSLAM/apps/ros_catkin_workspace"
