@@ -6,6 +6,7 @@ docker run \
     --runtime=nvidia \
     --env QT_X11_NO_MITSHM=1 \
     --privileged \
+    --ipc=host \
     -e SHELL \
     -e DISPLAY \
     -e DOCKER=1 \
