@@ -27,7 +27,7 @@ docker run \
   -e DISPLAY \
   -e DOCKER=1 \
   -w /Development/ \
-  -v /home/liangchuan/Development:/Development \
+  -v $local_dev:/Development \
   -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
   -v /dev/bus/usb:/dev/bus/usb \
   -v /dev/input:/dev/input \
