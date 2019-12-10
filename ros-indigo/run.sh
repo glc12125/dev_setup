@@ -17,6 +17,8 @@ if [ ! -d $local_dev ]; then
 	mkdir -p $local_dev
 fi
 
+external_data_dir=/media/liangchuan/Samsung_T51/data/
+
 #docker volume create --driver local --opt type=none --opt device=$local_dev --opt o=bind rosindigo_dev
 
 xhost + # Allow any connections to X server
@@ -28,6 +30,7 @@ docker run \
   -e DOCKER=1 \
   -w /Development/ \
   -v $local_dev:/Development \
+  -v $external_data_dir:/Development/external_data \
   -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
   -v /dev/bus/usb:/dev/bus/usb \
   -v /dev/input:/dev/input \
