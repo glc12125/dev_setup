@@ -14,7 +14,7 @@ set -e
 
 local_dev=$HOME/Development/
 if [ ! -d $local_dev ]; then
-	mkdir -p $local_dev
+  mkdir -p $local_dev
 fi
 
 #docker volume create --driver local --opt type=none --opt device=$local_dev --opt o=bind rosindigo_dev
@@ -28,6 +28,7 @@ docker run \
   -e DOCKER=1 \
   -w /Development/ \
   -v $local_dev:/Development \
+  -v /media/robok/Samsung_T51/data:/Development/external_data \
   -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
   -v /dev/bus/usb:/dev/bus/usb \
   -v /dev/input:/dev/input \
