@@ -2,8 +2,12 @@
 
 # Check args
 if [ "$#" -ne 1 ]; then
-  echo "usage: ./run.sh IMAGE_NAME"
-  return 1
+  #echo "usage: ./run.sh IMAGE_NAME"
+  #return 1
+  echo "Using default: glc12125/ros-indigo-slam:lsd.N430_50"
+  IMAGE_NAME=glc12125/ros-indigo-slam:lsd.N430_50
+else
+  IMAGE_NAME=$1
 fi
 
 # Get this script's path
@@ -32,4 +36,4 @@ docker run \
   -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
   -v /dev/bus/usb:/dev/bus/usb \
   -v /dev/input:/dev/input \
-  -it $1 $SHELL
+  -it $IMAGE_NAME $SHELL
