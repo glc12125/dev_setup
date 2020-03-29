@@ -14,7 +14,7 @@ set -e
 
 local_dev=$HOME/Development/
 if [ ! -d $local_dev ]; then
-	mkdir -p $local_dev
+  mkdir -p $local_dev
 fi
 
 external_data_dir=/media/liangchuan/Samsung_T51/data/
