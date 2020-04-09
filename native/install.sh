@@ -47,7 +47,7 @@ guess_system_package_manager(){
     if [ $SYSTEM_PACKAGE_TYPE == "rpm" ]; then
         SYSTEM_PACKAGE_SET="gvim ctags cscope git wget pcre-devel libyaml-devel python-pip python-devel clang-devel clang-libs"
     elif [ $SYSTEM_PACKAGE_TYPE == "deb" ]; then
-        SYSTEM_PACKAGE_SET="build-essential checkinstall cmake pkg-config yasm libtiff5-dev libjpeg-dev libjasper-dev wget libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils libeigen3-dev libglew-dev libusb-1.0-0-dev libpng12-dev libtiff5-dev libopenexr-dev doxygen libboost-all-dev libflann1.8 libflann-dev prelink execstack libglew-dev libglm-dev libsoil-dev freeglut3-dev libxmu-dev libxi-dev libpng++-dev autoconf automake libtool curl make g++ unzip libwebp-dev libsm6 libxext6 libxrender-dev sudo apt-get install python3-tk"
+        SYSTEM_PACKAGE_SET="build-essential checkinstall cmake libssl-dev pkg-config yasm libtiff5-dev libproj-dev libhdf5-dev libvtk6-dev libjpeg-dev libjasper-dev wget libx11-dev libxext-dev libxtst-dev libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libxine2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libgl2ps-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils libeigen3-dev libglew-dev libusb-1.0-0-dev libpng12-dev libtiff5-dev libopenexr-dev doxygen libboost-all-dev libflann1.8 libflann-dev prelink execstack libglew-dev libglm-dev libsoil-dev freeglut3-dev libxmu-dev libxmuu-dev libgl1-mesa-dev libglu1-mesa-dev libxi-dev libpng++-dev autoconf automake libtool curl make g++ unzip libwebp-dev libsm6 libxext6 libxrender-dev python3-tk libbz2-dev apt-get install libxt-dev "
     elif [ $SYSTEM_PACKAGE_TYPE == "archpkg" || $SYSTEM_PACKAGE_TYPE == "ebuild" ]; then
         SYSTEM_PACKAGE_SET="gvim ctags cscope git wget pcre libyaml python-pip python clang"
     fi
@@ -110,7 +110,22 @@ echo "$passwd" | sudo -S mkdir -p $DEV_INSTALL_DIR_DEFAULT
 echo "$passwd" | sudo -S mkdir download && cd download
 echo "$passwd" | sudo -S mkdir ~/libs
 
-# Install opencv 3.2
+
+# Install cmake 3.17.0
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Installing cmake 3.17.0 ..."
+echo "----------------------------------------------------------------------------"
+echo "$passwd" | sudo -S mkdir -p $DEV_INSTALL_DIR_DEFAULT/download
+cd $DEV_INSTALL_DIR_DEFAULT/download
+echo "$passwd" | sudo -S wget https://github.com/Kitware/CMake/releases/download/v3.17.0/cmake-3.17.0.tar.gz -O cmake-3.17.0.tar.gz
+echo "$passwd" | sudo -S tar xf cmake-3.17.0.tar.gz && cd cmake-3.17.0
+echo "$passwd" | sudo -S ./configure
+echo "$passwd" | sudo -S make -j$(nproc)
+echo "$passwd" | sudo -S make install
+cd ../../
+
+# Install opencv 3.4.5
 echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Installing opencv 3.4.5 and opencv_contrib 3.4.5 ..."
@@ -121,12 +136,25 @@ echo "$passwd" | sudo -S wget https://github.com/opencv/opencv/archive/3.4.5.zip
 echo "$passwd" | sudo -S wget https://github.com/opencv/opencv_contrib/archive/3.4.5.zip -O opencv_contrib-3.4.5.zip
 echo "$passwd" | sudo -S unzip opencv3.4.5.zip && unzip opencv_contrib-3.4.5.zip && cd opencv-3.4.5
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_OPENCV_GPU=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=~/libs -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_CUDA=OFF -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.4.5/modules ..
+echo "$passwd" | sudo -S cmake -D CMAKE_BUILD_TYPE=RELEASE -D BUILD_OPENCV_GPU=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_INSTALL_PREFIX=~/Development/libs -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D BUILD_EXAMPLES=OFF -D WITH_CUDA=OFF -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-3.4.5/modules ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 echo "$passwd" | sudo -S /bin/bash -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
 echo "$passwd" | sudo -S ldconfig
 echo "$passwd" | sudo -S execstack -c /usr/local/lib/*opencv*.so*
+cd ../../
+
+# Install boost 1.58
+echo -e "\n"
+echo "----------------------------------------------------------------------------"
+echo "Installing boost 1.65.1 ..."
+echo "----------------------------------------------------------------------------"
+echo "$passwd" | sudo -S mkdir -p $DEV_INSTALL_DIR_DEFAULT/download
+cd $DEV_INSTALL_DIR_DEFAULT/download
+echo "$passwd" | sudo -S wget http://sourceforge.net/projects/boost/files/boost/1.65.1/boost_1_65_1.tar.bz2 -O boost_1_65_1.tar.bz2
+echo "$passwd" | sudo -S tar xjf boost_1_65_1.tar.bz2 && cd boost_1_65_1
+echo "$passwd" | sudo -S ./bootstrap.sh --prefix="$HOME"/Development/libs
+echo "$passwd" | sudo -S ./b2 link=static --prefix="$HOME"/Development/libs install
 cd ../../
 
 # Install GLFW
@@ -184,10 +212,10 @@ echo -e "\n"
 echo "----------------------------------------------------------------------------"
 echo "Installing vtk (For pcl visualization) ..."
 echo "----------------------------------------------------------------------------"
-echo "$passwd" | sudo -S wget http://www.vtk.org/files/release/6.2/VTK-6.2.0.tar.gz
-echo "$passwd" | sudo -S tar -xf VTK-6.2.0.tar.gz && cd VTK-6.2.0
+echo "$passwd" | sudo -S wget https://www.vtk.org/files/release/7.1/VTK-7.1.1.tar.gz -O VTK-7.1.1.tar.gz
+echo "$passwd" | sudo -S tar -xf VTK-7.1.1.tar.gz && cd VTK-7.1.1
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
+echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/Development/libs ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 cd ../../
@@ -201,7 +229,7 @@ echo "$passwd" | sudo -S wget https://github.com/PointCloudLibrary/pcl/archive/p
 pwd
 echo "$passwd" | sudo -S tar -xf pcl-1.8.0.tar.gz && cd pcl-pcl-1.8.0
 echo "$passwd" | sudo -S mkdir build && cd build
-echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/libs ..
+echo "$passwd" | sudo -S cmake -D CMAKE_INSTALL_PREFIX=~/Development/libs -D CMAKE_BUILD_TYPE=Release -D Boost_USE_STATIC=ON -D Boost_USE_STATIC_LIBS=ON ..
 echo "$passwd" | sudo -S make -j$(nproc)
 echo "$passwd" | sudo -S make install
 cd ../../

@@ -23,10 +23,11 @@ xhost + # Allow any connections to X server
 # Run the container with shared X11
 docker run \
   --privileged \
-  --net=host \
   -e SHELL \
   -e DISPLAY \
   -e DOCKER=1 \
+  -w /Development/ \
+  -p 8888:8888 \
   -v $local_dev:/Development \
   -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
   -v /dev/video0:/dev/video0 \
