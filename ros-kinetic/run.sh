@@ -12,7 +12,7 @@ popd > /dev/null
 
 set -e
 
-local_dev=$HOME/Development
+local_dev=/media/duncan/data_linux2/RoboK/Development
 if [ ! -d $local_dev ]; then
 	mkdir -p $local_dev
 fi
@@ -27,7 +27,7 @@ docker run \
   -e DISPLAY \
   -e DOCKER=1 \
   -w /Development/ \
-  -p 8888:8888 \
+  -p 9000:8888 \
   -v $local_dev:/Development \
   -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
   -v /dev/video0:/dev/video0 \
