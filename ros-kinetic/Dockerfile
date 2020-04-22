@@ -80,6 +80,8 @@ RUN cd dev_setup/ros-kinetic && bash ros_install.sh
 #Install source code specific dependencies
 
 #Install Ceres and dependencies
+#remove ubuntu-xboxdrv as it is causing errors
+RUN sudo apt-get purge -y xboxdrv
 #dependencies
 RUN sudo apt-get install -y \
     libgoogle-glog-dev \
@@ -87,18 +89,19 @@ RUN sudo apt-get install -y \
     libeigen3-dev \
     libsuitesparse-dev
 RUN sudo add-apt-repository -y ppa:bzindovic/suitesparse-bugfix-1319687
-RUN sudo apt-get update && apt-get install -y libsuitesparse-dev
+#RUN sudo apt-get update -y
+RUN sudo apt-get install -y libsuitesparse-dev
 #Ceres
-WORKDIR HOME
-RUN curl -O http://ceres-solver.org/ceres-solver-1.14.0.tar.gz
-RUN tar zxf ceres-solver-1.14.0.tar.gz
-RUN mkdir ceres-bin && cd ceres-bin
-RUN cmake ../ceres-solver-1.14.0
-RUN make -j3
-RUN make test
-RUN sudo make install
-
-
+RUN sudo mkdir -p /tmp/ceres/
+WORKDIR /tmp/ceres/
+RUN sudo wget http://ceres-solver.org/ceres-solver-1.14.0.tar.gz \
+    && sudo tar zxf ceres-solver-1.14.0.tar.gz \
+    && sudo mkdir -p /tmp/ceres/ceres-bin \ 
+    && cd /tmp/ceres/ceres-bin \
+    && sudo cmake ../ceres-solver-1.14.0 \
+    && sudo make -j3 \
+    && make test \
+    && sudo make install
 
 # Switch to the workspace
 WORKDIR ${workspace}
