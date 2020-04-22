@@ -77,5 +77,28 @@ RUN sudo mkdir -p ${workspace} && cd ${workspace}
 RUN sudo git clone https://github.com/glc12125/dev_setup.git
 RUN cd dev_setup/ros-kinetic && bash ros_install.sh
 
+#Install source code specific dependencies
+
+#Install Ceres and dependencies
+#dependencies
+RUN sudo apt-get install -y \
+    libgoogle-glog-dev \
+    libatlas-base-dev \
+    libeigen3-dev \
+    libsuitesparse-dev
+RUN sudo add-apt-repository -y ppa:bzindovic/suitesparse-bugfix-1319687
+RUN sudo apt-get update && apt-get install -y libsuitesparse-dev
+#Ceres
+WORKDIR HOME
+RUN curl -O http://ceres-solver.org/ceres-solver-1.14.0.tar.gz
+RUN tar zxf ceres-solver-1.14.0.tar.gz
+RUN mkdir ceres-bin && cd ceres-bin
+RUN cmake ../ceres-solver-1.14.0
+RUN make -j3
+RUN make test
+RUN sudo make install
+
+
+
 # Switch to the workspace
 WORKDIR ${workspace}
