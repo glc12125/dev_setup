@@ -103,5 +103,24 @@ RUN sudo wget http://ceres-solver.org/ceres-solver-1.14.0.tar.gz \
     && make test \
     && sudo make install
 
+#install python3 environment
+RUN sudo apt install python3-pip
+RUN pip3 install --upgrade pip
+RUN pip3 install --upgrade pip setuptools
+RUN sudo apt-get install spyder3
+RUN sudo apt install firefox
+RUN pip3 install --upgrade --user jupyterlab
+RUN pip3 install --upgrade --user notebook
+
+#python packages
+RUN pip3 install --upgrade scipy-stack
+RUN pip3 install --user --upgrade rospkg catkin_pkg
+#
+
+#finalise with python packages from Duncan's work environment
+#ADD requirements.txt
+#RUN pip-3.3 install -r requirements.txt
+
+
 # Switch to the workspace
 WORKDIR ${workspace}
