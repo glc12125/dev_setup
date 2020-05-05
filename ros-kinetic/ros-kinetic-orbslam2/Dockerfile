@@ -91,9 +91,9 @@ RUN sudo apt install -y ffmpeg libavcodec-dev libavutil-dev libavformat-dev libs
 RUN sudo apt install -y libdc1394-22-dev libraw1394-dev
 RUN sudo apt install -y libjpeg-dev libpng12-dev libtiff5-dev libopenexr-dev
 #Build Pangolin
-RUN sudo mkdir -p /tmp/pangolin/
-WORKDIR /tmp/pangolin/
-RUN git clone https://github.com/stevenlovegrove/Pangolin.git \
+RUN sudo mkdir -p /opt/pangolin/
+WORKDIR /opt/pangolin/
+RUN sudo git clone https://github.com/stevenlovegrove/Pangolin.git \
     && cd Pangolin \
     && sudo mkdir build \
     && cd build \
@@ -102,7 +102,6 @@ RUN git clone https://github.com/stevenlovegrove/Pangolin.git \
 #Download ORB-SLAM2 and install dependencies
 #Opencv
 RUN sudo apt-get install -y libopencv-dev
-WORKDIR /tmp/
 RUN sudo mkdir orbslam2
 WORKDIR /opt/
 #install DBoW2 and g2o
