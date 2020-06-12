@@ -10,9 +10,9 @@ fi
 fileFound=false
 while [[ "$fileFound" = false ]]
 do
-    read -p "Enter the NVIDIA driver run file (Default NVIDIA-Linux-x86_64-384.130.run): " runFile # Ask the user to enter a run file
+    read -p "Enter the NVIDIA driver run file (Default NVIDIA-Linux-x86_64-430.50.run): " runFile # Ask the user to enter a run file
     if [ "$runFile" = '' ]; then
-        runFile="../nvidia_drivers/NVIDIA-Linux-x86_64-384.130.run"
+        runFile="../nvidia_drivers/NVIDIA-Linux-x86_64-430.50.run"
     fi
     if [ ! -f $runFile ]; then
         echo "Run file not found!"
@@ -41,6 +41,7 @@ docker build\
   --build-arg home=$HOME\
   --build-arg workspace=$DEV_PATH\
   --build-arg shell=$SHELL\
+  --no-cache \
   -t $1 .
 
 echo Execution time is $(expr `date +%s` - $start_time) s

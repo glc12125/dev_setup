@@ -23,9 +23,6 @@ docker run \
     -v /dev/video0:/dev/video0 \
     -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     -it \
-    -p 8888:8888 \
-    -p 5051:5051 \
-    -p 2020:2020 \
     -w /Development/ \
     -v /home/liangchuan/Development:/Development \
     -e HOST_PERMS="$(id -u):$(id -g)" $IMAGE_NAME bash
