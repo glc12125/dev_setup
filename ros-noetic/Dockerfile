@@ -89,8 +89,8 @@ RUN sudo mkdir -p ${workspace} && cd ${workspace}
 
 
 RUN sudo apt-get install git -y
-RUN sudo git clone https://github.com/glc12125/dev_setup.git # TO DO: fix this path. Use branch duncan.
-RUN cd dev_setup/ros-noetic && bash ros_install.sh
+COPY ros_install.sh ros_install.sh
+RUN bash ros_install.sh
 
 #remove ubuntu-xboxdrv as it is causing errors
 RUN sudo apt-get purge -y xboxdrv
@@ -104,14 +104,12 @@ RUN pip3 install --upgrade pip setuptools
 RUN sudo apt install -y firefox
 RUN pip3 install --upgrade jupyterlab
 RUN pip3 install --upgrade  notebook
-RUN sudo add-apt-repository ppa:sweptlaser/python3-pcl -y && \
-    sudo apt update -y && \
+RUN sudo apt update -y && \
     sudo apt install python3-pcl -y
 
 
 #python packages
 RUN pip3 install --upgrade scipy-stack
-RUN pip3 install --upgrade 
 RUN pip3 install --upgrade rospkg catkin_pkg
 RUN sudo apt install python3-opencv
 

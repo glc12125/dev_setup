@@ -27,7 +27,7 @@ guess_system_package_manager(){
 
 print_usage(){
     echo -e "Usage: './ros_install.sh'"
-    echo -e "There are no args supported, only Ubuntu 16.04 is supported."
+    echo -e "There are no args supported, only Ubuntu 20.04 is supported."
 }
 
 print_green(){
@@ -39,7 +39,7 @@ print_green(){
 # Make sure the correct versions of OS is supported
 #####################################################################################################
 if [ $# -eq 0 ]; then
-    echo "Installing for Ubuntu 16.04 by default."
+    echo "Installing for Ubuntu 20.04 by default."
 else
     echo "Invalid number of arguments!"
     print_usage
