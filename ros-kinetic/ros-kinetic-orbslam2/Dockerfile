@@ -121,6 +121,47 @@ WORKDIR /opt/
 RUN cd ORB_SLAM2 \
     && sudo chmod +x build.sh \
     && sudo ./build.sh
+#Add python-binding
+#install python dependencies first
+RUN sudo apt-get install -y python3-dev python3-pip \
+    && pip3 install --upgrade numpy \
+    && pip3 install --upgrade pip setuptools \
+    && pip3 install --upgrade scipy-stack
+RUN cd /opt/ORB_SLAM2/ \
+    && sudo wget https://raw.githubusercontent.com/jskinn/ORB_SLAM2-PythonBindings/master/orbslam-changes.diff \
+    && sudo git apply orbslam-changes.diff \
+    && sudo ./build.sh \
+    && cd build/ \
+    && sudo make install \
+    && cd /opt/ \
+    && sudo git clone https://github.com/jskinn/ORB_SLAM2-PythonBindings.git \
+    && cd ORB_SLAM2-PythonBindings/ \
+    && sudo mkdir build \
+    && cd build \
+    && sudo cmake .. \
+    && sudo make \
+    && sudo make install 
+
+#change default from python2.7 to python3
+RUN echo alias python=/usr/bin/python3 >> ~/.bashrc
+
+#install opencv for python
+RUN pip3 install --upgrade setuptools \
+    && sudo pip3 install --upgrade pip
+RUN pip3 install --user --upgrade opencv-python
+RUN echo PYTHONPATH=/usr/lib/python3/dist-packages >> ~/.bashrc
+
+RUN sudo python -m pip install --upgrade pip \
+    && sudo python3 -m pip install --upgrade pip
+RUN sudo apt-get install -y python3-tk \
+    && sudo pip3 install evo --upgrade --no-binary evo
+
+#install gedit
+RUN sudo apt-get install -y gedit
+
+
+
+
 
 # Switch to the workspace
 WORKDIR ${workspace}
